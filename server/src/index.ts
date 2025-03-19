@@ -6,6 +6,7 @@ import { Exercise } from "./entity/Exercise.entity";
 import { Workout, WorkoutType } from "./entity/Workout.entity";
 import activityController from "./controllers/activityController";
 import cors from 'cors'
+import exerciseController from "./controllers/exerciseController";
 
 // Create a new express application instance
 const app = express();
@@ -83,6 +84,7 @@ AppDataSource.initialize().then(async () => {
     app.use(cors())
     app.get("/workout", workoutController.getWorkoutsResponse);
     app.get("/activity", activityController.getActivitiesResponse);
+    app.get("/exercise", exerciseController.getExercisesResponse)
 
     // Start the Express server
     app.listen(port, () => {

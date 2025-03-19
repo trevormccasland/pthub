@@ -1,6 +1,6 @@
-const url = 'http://localhost:3000/activity'
+const url = 'http://localhost:3000/exercise'
 
-const getActivities = async () => {
+const getExercises = async () => {
     const resp = await fetch(url, {
         method: 'GET',
         mode: 'cors'
@@ -11,5 +11,5 @@ const getActivities = async () => {
 }
 
 export default {
-    getActivities
+    getExercises
 }
