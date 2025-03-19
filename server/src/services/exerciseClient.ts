@@ -5,6 +5,11 @@ const getExercises = async (): Promise<Exercise[]> => {
     return  await AppDataSource.getRepository(Exercise).find()
 }
 
+const updateExercise = async (exercise: Exercise): Promise<Exercise> => {
+    return await AppDataSource.getRepository(Exercise).save(exercise)
+}
+
 export default {
-    getExercises
+    getExercises,
+    updateExercise
 }

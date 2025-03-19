@@ -1,4 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, ValueTransformer } from "typeorm"
+
+const trim: ValueTransformer = {
+    to: (entityValue: number[]) => {
+        return entityValue.join('-')
+    },
+    from: (databaseValue: string) => {
+        return databaseValue.split('-')
+    },
+}
 
 @Entity()
 export class Exercise {
