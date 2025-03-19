@@ -1,0 +1,27 @@
+{
+   "name": "server",
+   "version": "0.0.1",
+   "description": "Awesome project developed with TypeORM.",
+   "type": "commonjs",
+   "devDependencies": {
+      "@types/cors": "^2.8.17",
+      "@types/express": "^5.0.0",
+      "@types/node": "^16.18.126",
+      "@types/xlsx": "^0.0.35",
+      "ts-node": "^10.9.1",
+      "typescript": "^4.5.2"
+   },
+   "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.21.2",
+      "pg": "^8.4.0",
+      "reflect-metadata": "^0.1.13",
+      "typeorm": "0.3.21",
+      "xlsx": "^0.18.5"
+   },
+   "scripts": {
+      "start": "ts-node src/index.ts",
+      "typeorm": "typeorm-ts-node-commonjs",
+      "import": "ts-node src/workoutImporter.ts"
+   }
+}
