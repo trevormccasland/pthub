@@ -5,6 +5,7 @@ import { Activity, ActivityType } from "./entity/Activity.entity";
 import { Exercise } from "./entity/Exercise.entity";
 import { Workout, WorkoutType } from "./entity/Workout.entity";
 import activityController from "./controllers/activityController";
+import cors from 'cors'
 
 // Create a new express application instance
 const app = express();
@@ -79,6 +80,7 @@ AppDataSource.initialize().then(async () => {
     console.log("Loaded activities: ", activities)
 
     // Define the root path with a greeting message
+    app.use(cors())
     app.get("/workout", workoutController.getWorkoutsResponse);
     app.get("/activity", activityController.getActivitiesResponse);
 

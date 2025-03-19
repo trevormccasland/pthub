@@ -1,7 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material"
-import { Workout, isExercise } from "../types"
-import ExerciseCard from "./ExerciseCard"
-import SuperSetActivityCard from "./SuperSetActivityCard"
+import { Workout } from "../types"
 import ActivityCard from "./ActivityCard"
 
 interface WorkoutCardProps {
