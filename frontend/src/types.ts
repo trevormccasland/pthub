@@ -11,14 +11,14 @@ export interface Exercise {
     name: string
     level: OptModelLevel
     type: ExericseType
-    load?: number,
+    load?: number | null,
     url?: string
-    sets?: number
-    reps?: number
-    time?: number
-    rest?: number
-    tempo?: [number, number, number, number],
-    notes?: string
+    sets?: number | null
+    reps?: number | null
+    time?: number | null
+    rest?: number | null
+    tempo?: [number, number, number, number] | null,
+    notes?: string | null
 }
 
 export interface Activity {
@@ -29,7 +29,7 @@ export interface Activity {
 
 export interface Workout {
     name: string
-    sets?: number
+    sets?: number | null
     type: WorkoutType
     warmup: Array<Activity>
     work: Array<Activity>
