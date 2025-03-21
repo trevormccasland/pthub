@@ -9,7 +9,7 @@ const getExercises = async () => {
     })
     if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
     const data = await resp.json()
-    return data
+    return data.exercises
 }
 const headers = new Headers({
     "Content-Type": "application/json"
@@ -23,7 +23,7 @@ const updateExercise = async (exercise: Exercise) => {
     })
     if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
     const data = await resp.json()
-    return data
+    return data.exercise
 }
 
 export default {

@@ -9,6 +9,11 @@ const getActivities = async (): Promise<Activity[]> => {
     })
 }
 
+const updateActivity = async (activity: Activity): Promise<Activity> => {
+    return await AppDataSource.getRepository(Activity).save(activity)
+}
+
 export default {
-    getActivities
+    getActivities,
+    updateActivity
 }

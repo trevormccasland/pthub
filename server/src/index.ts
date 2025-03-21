@@ -26,6 +26,7 @@ AppDataSource.initialize().then(async () => {
     app.get("/activity", activityController.getActivitiesResponse);
     app.get("/exercise", exerciseController.getExercisesResponse)
     app.put("/exercise", exerciseController.updateExerciseResponse)
+    app.put("/activity", activityController.updateAcitivtyResponse)
     // Start the Express server
     app.listen(port, () => {
         console.log(`The server is running at http://localhost:${port}`);

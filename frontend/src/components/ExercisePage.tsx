@@ -48,7 +48,6 @@ const ExercisePage: FC<ExercisePageProps> = ({exercise}) => {
     const onSave = async () => {
         await exerciseServiceClient.updateExercise(updates)
     }
-    console.log({updates})
     return <Container className={classes.container}>
         <Stack direction='column'>
             <Box className={classes.title}>
