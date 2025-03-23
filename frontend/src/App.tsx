@@ -4,7 +4,7 @@ import ExerciseList from "./components/ExerciseList"
 
 
 const App: FC = () => {
-    return <ActivityList />
+    return <ExerciseList />
 }
 
 export default App

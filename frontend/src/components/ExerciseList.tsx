@@ -1,13 +1,18 @@
-import { List, ListItem, ListItemText, ListItemButton } from "@mui/material"
+import { List, ListItem, ListItemText, ListItemButton, ListItemIcon, Box, Stack } from "@mui/material"
 import { useEffect, useState } from "react"
 import { Exercise } from "../types"
 import exerciseServiceClient from "../services/exerciseServiceClient";
 import ExercisePage from "./ExercisePage";
 import ExerciseCard from "./ExerciseCard";
+import { ModeEdit, Visibility } from "@mui/icons-material";
 
 const ExerciseList = () => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState<number>(-1)
+    const [view, setView] = useState({
+        edit: false,
+        view: false,
+        index: -1
+    })
     useEffect(() => {
         const callGetExercises = async () => {
             const data = await exerciseServiceClient.getExercises()
@@ -15,15 +20,36 @@ const ExerciseList = () => {
         }
         callGetExercises()
     }, [])
-    if (selectedIndex !== -1) {
-        return <ExerciseCard exercise={exercises[selectedIndex]} />
+    if (view.view) {
+        return <ExerciseCard exercise={exercises[view.index]} />
+    }
+    if (view.edit) {
+        return <ExercisePage exercise={exercises[view.index]} />
     }
     return <List>
         {exercises.map((exercise, i) => (
             <ListItem key={exercise.name + i}>
-                <ListItemButton onClick={() => setSelectedIndex(i)}>
-                    <ListItemText primary={exercise.name} />
-                </ListItemButton>
+                <ListItemText primary={exercise.name} />
+                <Stack direction='row'>
+                    <ListItemButton onClick={() => setView({
+                                index: i,
+                                edit: true,
+                                view: false
+                            })}>
+                        <ListItemIcon>
+                            <ModeEdit />
+                        </ListItemIcon>
+                    </ListItemButton>
+                    <ListItemButton onClick={() => setView({
+                                index: i,
+                                edit: false,
+                                view: true
+                            })}>
+                        <ListItemIcon>
+                            <Visibility />
+                        </ListItemIcon>
+                    </ListItemButton>
+                </Stack>
             </ListItem>
         ))}
     </List>

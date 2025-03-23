@@ -31,7 +31,7 @@ const useStyles = makeStyles({
         margin: '0.5rem'
     },
     tempoField: {
-        width: '150px',
+        width: '50px',
     },
     actionRow: {
         marginTop: '1rem',
@@ -78,10 +78,10 @@ const ExercisePage: FC<ExercisePageProps> = ({exercise}) => {
             <Stack direction='column'>
                 <Box><Typography>Tempo</Typography></Box>
                 <Stack className={classes.tempoRow} direction='row' spacing={2}>
-                    <TextField className={classes.tempoField} size='small' label='Eccentric' value={updates.tempo?.[0]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [parseInt(e.target.value), prev?.tempo?.[1] ?? -1, prev?.tempo?.[2] ?? -1, prev?.tempo?.[3] ?? -1]}))}/>
-                    <TextField className={classes.tempoField} size='small' label='Eccentric Hold' value={updates.tempo?.[1] === -1 ? null : updates.tempo?.[1]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, parseInt(e.target.value), prev?.tempo?.[2] ?? -1, prev?.tempo?.[3] ?? -1]}))}/>
-                    <TextField className={classes.tempoField} size='small' label='Concentric' value={updates.tempo?.[2] === -1 ? null : updates.tempo?.[2]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, prev?.tempo?.[1] ?? -1, parseInt(e.target.value), prev?.tempo?.[3] ?? -1]}))}/>
-                    <TextField className={classes.tempoField} size='small' label='Concentric Hold' value={updates.tempo?.[3] === -1 ? null : updates.tempo?.[3]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, prev?.tempo?.[1] ?? -1, prev?.tempo?.[2] ?? -1, parseInt(e.target.value)]}))}/>
+                    <TextField className={classes.tempoField} size='small' type='number' label='E' value={updates.tempo?.[0]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [parseInt(e.target.value), prev?.tempo?.[1] ?? -1, prev?.tempo?.[2] ?? -1, prev?.tempo?.[3] ?? -1]}))}/>
+                    <TextField className={classes.tempoField} size='small' type='number' label='EH' value={updates.tempo?.[1] === -1 ? null : updates.tempo?.[1]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, parseInt(e.target.value), prev?.tempo?.[2] ?? -1, prev?.tempo?.[3] ?? -1]}))}/>
+                    <TextField className={classes.tempoField} size='small' type='number' label='C' value={updates.tempo?.[2] === -1 ? null : updates.tempo?.[2]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, prev?.tempo?.[1] ?? -1, parseInt(e.target.value), prev?.tempo?.[3] ?? -1]}))}/>
+                    <TextField className={classes.tempoField} size='small' type='number' label='CH' value={updates.tempo?.[3] === -1 ? null : updates.tempo?.[3]} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, tempo: [prev?.tempo?.[0] ?? -1, prev?.tempo?.[1] ?? -1, prev?.tempo?.[2] ?? -1, parseInt(e.target.value)]}))}/>
                 </Stack>
             </Stack>
             <Stack className={classes.actionRow} direction='row-reverse' spacing={2}>
