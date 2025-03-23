@@ -1,3 +1,5 @@
+import { Workout } from "../types"
+
 const url = 'http://localhost:3000/workout'
 
 const getWorkouts = async () => {
@@ -7,9 +9,25 @@ const getWorkouts = async () => {
     })
     if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
     const data = await resp.json()
-    return data
+    return data.workouts
+}
+
+const headers = new Headers({
+    "Content-Type": "application/json"
+  });
+const updateWorkout = async (workout: Workout) => {
+    const resp = await fetch(url, {
+        method: 'PUT',
+        mode: 'cors',
+        headers: headers,
+        body: JSON.stringify(workout)
+    })
+    if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
+    const data = await resp.json()
+    return data.workout
 }
 
 export default {
-    getWorkouts
+    getWorkouts,
+    updateWorkout
 }

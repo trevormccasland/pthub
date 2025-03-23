@@ -7,7 +7,7 @@ const getActivities = async () => {
     })
     if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
     const data = await resp.json()
-    return data
+    return data.activities
 }
 
 export default {

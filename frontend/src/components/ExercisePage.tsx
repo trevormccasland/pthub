@@ -3,7 +3,7 @@ import { Exercise } from "../types"
 import { Box, Button, Container, Divider, Stack, TextField, Typography } from "@mui/material"
 import exerciseServiceClient from "../services/exerciseServiceClient"
 import { makeStyles } from "@mui/styles"
-import ReactPlayer from 'react-player' // Import ReactPlayer
+import ReactPlayer from 'react-player'
 
 interface ExercisePageProps {
   exercise: Exercise

@@ -17,6 +17,11 @@ const getWorkouts = async (): Promise<Workout[]> => {
     })
 }
 
+const updateWorkout = async (entity: Workout): Promise<Workout> => {
+    return await AppDataSource.getRepository(Workout).save(entity)
+}
+
 export default {
-    getWorkouts
+    getWorkouts,
+    updateWorkout
 }
