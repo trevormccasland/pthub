@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from "react"
 import { Workout } from "../types"
 import { Box } from "@mui/material"
-import WorkoutCard from "../components/WorkoutCard"
+import WorkoutCard from "./WorkoutCard"
 import workoutServiceClient from "../services/workoutServiceClient"
 
 
