@@ -29,6 +29,7 @@
     "@mui/material": "^6.4.6",
     "@mui/styles": "^6.4.6",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-player": "^2.16.0"
   }
 }
