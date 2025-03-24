@@ -1,8 +1,8 @@
-import { FC, useCallback, useMemo, useState } from "react"
+import { FC, useCallback, useEffect, useMemo, useState } from "react"
 import { Activity, Exercise } from "../types"
-import { Autocomplete, Box, Button, Container, Divider, IconButton, LinearProgress, List, ListItemButton, ListItemText, Stack, TextField, Typography } from "@mui/material"
+import { Autocomplete, Box, Button, Container, Divider, IconButton, List, ListItemButton, ListItemText, Stack, TextField, Typography } from "@mui/material"
 import { makeStyles } from "@mui/styles"
-import { Add, Check, Delete } from "@mui/icons-material"
+import { Add, Delete } from "@mui/icons-material"
 import exerciseServiceClient from "../services/exerciseServiceClient"
 
 interface ActivityPageProps {
@@ -31,31 +31,25 @@ const useStyles = makeStyles({
 
 const ActivityPage: FC<ActivityPageProps> = ({activity}) => {
     const classes = useStyles()
-    const [loading, setLoading] = useState(false)
     const [updates, setUpdates] = useState<Activity>({...activity})
-    const [inputUpdate, setInputUpdate] = useState<string | null>(null)
+    const [selectedExericse, setSelectedExercise] = useState<Exercise | null>(null)
     const [exercises, setExercises] = useState<Exercise[]>();
-    const onAddExercise = async () => {
-        if (!exercises) {
-            setLoading(true)
-            const data = await exerciseServiceClient.getExercises()
-            setExercises(data)
-            setLoading(false)
+    useEffect(() => {
+        const fetchExercises = async () => {
+            try {
+                const fetchedExercises = await exerciseServiceClient.getExercises()
+                setExercises(fetchedExercises)
+            } catch (error) {
+                console.error('Error fetch exercises', error)
+            }
         }
-        setInputUpdate('')
-    }
-    const handleInputValueChange = useCallback(
-        (newInputValue: string | null) => {
-            setInputUpdate(newInputValue);
-        },
-        [setInputUpdate]
-    );
-    const getNameInputValue = useCallback(() => inputUpdate ?? '', [inputUpdate])
-    const options = useMemo(() => exercises?.reduce<string[]>((result, e) => {
-        if (result.includes(e.name)) {
+        fetchExercises()
+    }, [])
+    const options = useMemo(() => exercises?.reduce<Exercise[]>((result, e) => {
+        if (result.some(v => v.name === e.name)) {
             return result
         }
-        result.push(e.name)
+        result.push(e)
         return result
     }, []) ?? [], [exercises])
 
@@ -70,20 +64,16 @@ const ActivityPage: FC<ActivityPageProps> = ({activity}) => {
         [setUpdates]
     );
     
-    const handleApprove = useCallback(
+    const handleAddExercise = useCallback(
         () => {
-          if (inputUpdate && exercises) {
-            setUpdates(prev => {
-                let newGroup;
-                const index = exercises.findIndex((e) => e.name === inputUpdate)
-                newGroup = [...prev.group, { ...exercises[index] }];
-                return { ...prev, group: newGroup };
-            });
+          if (selectedExericse) {
+            setUpdates(prev => (
+                { ...prev, group: [...prev.group, selectedExericse] }
+            ));
           }
-    
-          setInputUpdate(null);
+          setSelectedExercise(null);
         },
-        [setUpdates, setInputUpdate, activity.group.length, inputUpdate, exercises]
+        [setUpdates, selectedExericse, setSelectedExercise]
     );
     return <Container>
         <Stack direction='column'>
@@ -92,30 +82,22 @@ const ActivityPage: FC<ActivityPageProps> = ({activity}) => {
             </Box>
             <Divider className={classes.divider} />
             <Box>
-                <TextField label='Name' value={updates.name} />
+                <TextField fullWidth label='Activity Name' value={updates.name} onChange={(event: React.ChangeEvent<HTMLInputElement>) => setUpdates((prev) => ({...prev, name: event.target.value}))} />
             </Box>
             <Stack direction='column'>
-                <Button disabled={inputUpdate !== null} endIcon={<Add />} onClick={onAddExercise}>
+                <Typography variant="h6">Exercises</Typography>
+                <Autocomplete
+                    options={options}
+                    getOptionLabel={(option) => option.name}
+                    value={selectedExericse}
+                    onChange={(_, newValue) => setSelectedExercise(newValue)}
+                    renderInput={(params) => (
+                        <TextField {...params} fullWidth className={classes.exerciseSelect} label='Name'/>
+                    )}
+                />
+                <Button startIcon={<Add />} onClick={handleAddExercise}>
                     Add Exercise
                 </Button>
-                {inputUpdate !== null &&
-                    <Stack direction='row'>
-                        <Autocomplete
-                            inputValue={getNameInputValue()}
-                            onInputChange={(event, newInputValue) => handleInputValueChange(newInputValue)}
-                            
-                            options={options}
-                            renderInput={(params) => (
-                                <TextField {...params} className={classes.exerciseSelect} fullWidth label='Name' value={inputUpdate} />
-                            )}
-                        />
-                        <Box className={classes.center}>
-                            <IconButton onClick={() => handleApprove()}>
-                                <Check />
-                            </IconButton>
-                        </Box>
-                    </Stack>
-                }
                 <List>
                     {updates.group.map((exercise, i) => (
                         <Stack direction='row'>
@@ -133,7 +115,6 @@ const ActivityPage: FC<ActivityPageProps> = ({activity}) => {
                         </Stack>
                     ))}
                 </List>
-                { loading && <LinearProgress />}
             </Stack>
         </Stack>
     </Container>

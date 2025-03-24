@@ -8,7 +8,6 @@ import ActivityCard from "./ActivityCard";
 
 const ActivityList = () => {
     const [activitys, setActivitys] = useState<Activity[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState<number>(-1)
     const [view, setView] = useState({
         index: -1,
         edit: false,

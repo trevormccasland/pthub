@@ -11,7 +11,7 @@ import {
   IconButton,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Add, Delete as DeleteIcon } from '@mui/icons-material';
 import { Workout, Activity, WorkoutType } from '../types';
 import workoutServiceClient from '../services/workoutServiceClient';
 import activityServiceClient from '../services/activityServiceClient';
@@ -170,7 +170,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
     <Container className={classes.container}>
       <Stack direction="column">
         <Box className={classes.title}>
-          <Typography variant="h3">Update Workout</Typography>
+          <Typography variant="h3">Workout Page</Typography>
         </Box>
         <Divider className={classes.divider} />
         <Box>
@@ -209,7 +209,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
           </TextField>
         </Box>
 
-        <Box>
+        <Stack direction='column'>
           <Typography variant="h6">Warmup Activities</Typography>
           <Autocomplete
             options={options}
@@ -220,7 +220,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               <TextField {...params} label="Select Warmup Activity" />
             )}
           />
-          <Button onClick={handleAddWarmupActivity}>Add Warmup</Button>
+          <Button startIcon={<Add />} onClick={handleAddWarmupActivity}>Add Warmup</Button>
           <Stack direction="column" className={classes.activityList}>
             {updates.warmup.map((activity, i) => (
               <Box key={activity.name + i} className={classes.activityItem}>
@@ -231,9 +231,9 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               </Box>
             ))}
           </Stack>
-        </Box>
+        </Stack>
 
-        <Box>
+        <Stack direction='column'>
           <Typography variant="h6">Work Activities</Typography>
           <Autocomplete
             options={options}
@@ -244,7 +244,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               <TextField {...params} label="Select Work Activity" />
             )}
           />
-          <Button onClick={handleAddWorkActivity}>Add Work</Button>
+          <Button startIcon={<Add />} onClick={handleAddWorkActivity}>Add Work</Button>
           <Stack direction="column" className={classes.activityList}>
             {updates.work.map((activity, i) => (
               <Box key={activity.name + i} className={classes.activityItem}>
@@ -255,9 +255,9 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               </Box>
             ))}
           </Stack>
-        </Box>
+        </Stack>
 
-        <Box>
+        <Stack direction='column'>
           <Typography variant="h6">Cooldown Activities</Typography>
           <Autocomplete
             options={options}
@@ -268,7 +268,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               <TextField {...params} label="Select Cooldown Activity" />
             )}
           />
-          <Button onClick={handleAddCooldownActivity}>Add Cooldown</Button>
+          <Button startIcon={<Add />} onClick={handleAddCooldownActivity}>Add Cooldown</Button>
           <Stack direction="column" className={classes.activityList}>
             {updates.cooldown.map((activity, i) => (
               <Box key={activity.name + i} className={classes.activityItem}>
@@ -279,7 +279,7 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
               </Box>
             ))}
           </Stack>
-        </Box>
+        </Stack>
 
         <Stack className={classes.actionRow} direction="row-reverse" spacing={2}>
           <Button variant="contained" onClick={handleUpdateWorkout}>
