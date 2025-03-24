@@ -29,7 +29,7 @@ This app will allow a personal trainer to build programs and assign them to clie
         |                                      |                                        |
         v                                      v                                        v
 +---------------+      (Auth Token)      +---------------+      (Storage)      +---------------+
-|      User     | <--------------------> |     Auth      | -----------------> |  Database/    |
+|      User     | <--------------------> |     Auth      | ------------------> |  Database/    |
 +---------------+                        +---------------+                     |    Cache      |
                                          ^                                     +---------------+
                                          | (Auth/Authz)
