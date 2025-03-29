@@ -1,8 +1,14 @@
-# README
-
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
+# Authentication Service
 
 * Ruby version 3.6.6
+
+## Tech
+
+* Google OAuth
+* Sqlite
+
+## How to run
+```bash
+bundle install
+rails server
+```
