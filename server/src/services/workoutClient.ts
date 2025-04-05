@@ -21,7 +21,13 @@ const updateWorkout = async (entity: Workout): Promise<Workout> => {
     return await AppDataSource.getRepository(Workout).save(entity)
 }
 
+const createWorkout = async (entity: Workout): Promise<Workout> => {
+    const newWorkout = AppDataSource.getRepository(Workout).create(entity)
+    return await AppDataSource.getRepository(Workout).save(newWorkout)
+}
+
 export default {
     getWorkouts,
-    updateWorkout
+    updateWorkout,
+    createWorkout
 }

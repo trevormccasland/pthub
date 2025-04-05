@@ -17,7 +17,8 @@ import workoutServiceClient from '../services/workoutServiceClient';
 import activityServiceClient from '../services/activityServiceClient';
 
 interface WorkoutPageProps {
-  workout: Workout;
+  workout: Workout
+  add: boolean
 }
 
 const useStyles = makeStyles({
@@ -52,7 +53,7 @@ const useStyles = makeStyles({
   },
 });
 
-const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
+const WorkoutPage: FC<WorkoutPageProps> = ({ add, workout }) => {
   const classes = useStyles();
   const [updates, setUpdates] = useState<Workout>({ ...workout });
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -147,6 +148,16 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
   const handleUpdateWorkout = async () => {
     try {
       await workoutServiceClient.updateWorkout(updates);
+      alert('Workout updated successfully!');
+    } catch (error) {
+      console.error('Error updating workout:', error);
+      alert('Failed to update workout.');
+    }
+  };
+
+  const handleCreateWorkout = async () => {
+    try {
+      await workoutServiceClient.createWorkout(updates);
       alert('Workout updated successfully!');
     } catch (error) {
       console.error('Error updating workout:', error);
@@ -282,8 +293,8 @@ const WorkoutPage: FC<WorkoutPageProps> = ({ workout }) => {
         </Stack>
 
         <Stack className={classes.actionRow} direction="row-reverse" spacing={2}>
-          <Button variant="contained" onClick={handleUpdateWorkout}>
-            Update Workout
+          <Button variant="contained" onClick={() => add ? handleCreateWorkout() : handleUpdateWorkout()}>
+            {add ? 'Add' : 'Update'} Workout
           </Button>
         </Stack>
       </Stack>

@@ -27,7 +27,20 @@ const updateWorkout = async (workout: Workout) => {
     return data.workout
 }
 
+const createWorkout = async (workout: Workout) => {
+    const resp = await fetch(url, {
+        method: 'POST',
+        mode: 'cors',
+        headers: headers,
+        body: JSON.stringify(workout)
+    })
+    if (!resp.ok) throw new Error(`${resp.statusText} ${await resp.text()}`)
+    const data = await resp.json()
+    return data.workout
+}
+
 export default {
     getWorkouts,
-    updateWorkout
+    updateWorkout,
+    createWorkout
 }

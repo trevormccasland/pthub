@@ -23,7 +23,15 @@ const updateExerciseResponse = async (req: Request, res: Response<ExerciseRespon
     res.json({exercise})
 }
 
+const createExerciseResponse = async (req: Request, res: Response<ExerciseResponse>) => {
+    const body = req.body
+    const entity = AppDataSource.manager.create(Exercise, body)
+    const exercise = await exerciseClient.createExercise(entity)
+    res.json({exercise})
+}
+
 export default {
     getExercisesResponse,
-    updateExerciseResponse
+    updateExerciseResponse,
+    createExerciseResponse
 }
