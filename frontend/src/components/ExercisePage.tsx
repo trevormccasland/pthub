@@ -6,7 +6,8 @@ import { makeStyles } from "@mui/styles"
 import ReactPlayer from 'react-player'
 
 interface ExercisePageProps {
-  exercise: Exercise
+  exercise: Exercise,
+  add?: boolean
 }
 
 const useStyles = makeStyles({
@@ -48,10 +49,13 @@ const useStyles = makeStyles({
   }
 })
 
-const ExercisePage: FC<ExercisePageProps> = ({ exercise }) => {
+const ExercisePage: FC<ExercisePageProps> = ({ add, exercise }) => {
   const classes = useStyles()
   const [updates, setUpdates] = useState<Exercise>({ ...exercise });
   const onSave = async () => {
+    if (add) {
+      await exerciseServiceClient.createExercise(updates)
+    }
     await exerciseServiceClient.updateExercise(updates)
   }
 
@@ -104,7 +108,7 @@ const ExercisePage: FC<ExercisePageProps> = ({ exercise }) => {
         </Box>
       )}
       <Stack className={classes.actionRow} direction='row-reverse' spacing={2}>
-        <Button variant="contained" onClick={onSave}>Save</Button>
+        <Button variant="contained" onClick={onSave}>{add ? 'Create' : 'Update'}</Button>
         <Button variant='outlined' onClick={() => setUpdates({ ...exercise })}>Reset</Button>
       </Stack>
     </Stack>

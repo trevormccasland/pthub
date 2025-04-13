@@ -23,7 +23,15 @@ const updateAcitivtyResponse = async (req: Request, res: Response<ActivityRespon
     res.json({activity})
 }
 
+const createActivityResponse = async (req: Request, res: Response<ActivityResponse>) => {
+    const body = req.body
+    const entity = AppDataSource.manager.create(Activity, body)
+    const activity = await activityClient.createActivity(entity)
+    res.json({activity})
+}
+
 export default {
     getActivitiesResponse,
-    updateAcitivtyResponse
+    updateAcitivtyResponse,
+    createActivityResponse
 }

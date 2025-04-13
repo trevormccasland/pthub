@@ -7,6 +7,7 @@ import exerciseServiceClient from "../services/exerciseServiceClient"
 
 interface ActivityPageProps {
     activity: Activity
+    add?: boolean
 }
 
 const useStyles = makeStyles({
@@ -29,7 +30,7 @@ const useStyles = makeStyles({
     }
 })
 
-const ActivityPage: FC<ActivityPageProps> = ({activity}) => {
+const ActivityPage: FC<ActivityPageProps> = ({activity, add }) => {
     const classes = useStyles()
     const [updates, setUpdates] = useState<Activity>({...activity})
     const [selectedExericse, setSelectedExercise] = useState<Exercise | null>(null)
