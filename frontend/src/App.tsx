@@ -1,20 +1,16 @@
 import React, { useState, FC } from 'react';
-import { Select, MenuItem, FormControl, InputLabel, SelectChangeEvent, Stack, Button } from '@mui/material';
 import ActivityList from "./components/ActivityList"; 
 import ExerciseList from "./components/ExerciseList";
 import WorkoutList from "./components/WorkoutList";
-import { Add } from '@mui/icons-material';
 import ActivityPage from './components/ActivityPage';
 import ExercisePage from './components/ExercisePage';
 import WorkoutPage from './components/WorkoutPage';
+import NavBar from './components/NavBar';
+
 
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
   const [action, setAction] = useState<string>('')
-
-  const handleListChange = (event: SelectChangeEvent) => {
-    setSelectedList(event.target.value);
-  };
 
   const handleAddButtonClick = () => {
     setAction(selectedList)
@@ -24,25 +20,11 @@ const App: FC = () => {
   if (action === 'workout') return <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
   return (
     <>
-      <Stack>
-        <Stack direction='row'>
-          <Button startIcon={<Add />} onClick={handleAddButtonClick}>{selectedList}</Button>
-        </Stack>
-        <FormControl fullWidth>
-          <InputLabel id="list-select-label">Select List</InputLabel>
-          <Select
-            labelId="list-select-label"
-            id="list-select"
-            value={selectedList}
-            label="Select List"
-            onChange={handleListChange}
-          >
-            <MenuItem value={'activity'}>Activity List</MenuItem>
-            <MenuItem value={'exercise'}>Exercise List</MenuItem>
-            <MenuItem value={'workout'}>Workout List</MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
+      <NavBar 
+        selectedList={selectedList}
+        setSelectedList={setSelectedList}
+        handleAddButtonClick={handleAddButtonClick}
+      />
       {selectedList === 'activity' && <ActivityList />}
       {selectedList === 'exercise' && <ExerciseList />}
       {selectedList === 'workout' && <WorkoutList />}
