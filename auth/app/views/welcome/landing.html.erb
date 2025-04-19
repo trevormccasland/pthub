@@ -1,6 +1,224 @@
-# app/views/welcome/landing.html.erb
-<h1>Welcome to Our Site!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Three Bears Wellness - Your Just Right Path to Movement & Recovery</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 960px;
+            margin: 20px auto;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        header h1 {
+            color: #a83232; /* A warm, bear-like brown */
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        header p {
+            font-size: 1.1em;
+            color: #555;
+        }
+        .hero {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        .hero-image {
+            flex: 1;
+            margin-right: 20px;
+        }
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            /* Placeholder for a comforting image related to your services */
+        }
+        .hero-text {
+            flex: 1;
+        }
+        .hero-text h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .hero-text p {
+            margin-bottom: 20px;
+        }
+        .cta-button {
+            display: inline-block;
+            background-color: 'white';
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .three-bears-approach {
+            margin-bottom: 30px;
+        }
+        .three-bears-approach h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .three-bears-approach p {
+            margin-bottom: 15px;
+        }
+        .three-bears-approach ul {
+            list-style: none;
+            padding: 0;
+        }
+        .three-bears-approach li {
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .three-bears-approach li:before {
+            content: "\2022"; /* Bullet point */
+            color: #a83232;
+            position: absolute;
+            left: 0;
+        }
+        .specializations {
+            margin-bottom: 30px;
+        }
+        .specializations h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .specializations ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        .specializations li {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        .specializations li strong {
+            color: #a83232;
+        }
+        .testimonial {
+            background-color: #e9ecef;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+        .testimonial cite {
+            display: block;
+            text-align: right;
+            color: #777;
+        }
+        .contact {
+            text-align: center;
+        }
+        .contact h2 {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        .contact a {
+            color: #a83232;
+            text-decoration: none;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #333;
+            color: #fff;
+            font-size: 0.9em;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>The Three Bears Wellness</h1>
+            <p>Your Just Right Path to Movement, Pain Relief, and Rehabilitation in St. Louis</p>
+        </header>
 
-<p>Please sign in with Google to access our services.</p>
+        <section class="hero">
+            <div class="hero-image">
+                <img src="<%= asset_path 'bear-wellness.jpg' %>" alt="Teddy Bear Wellness">
+            </div>
+            <div class="hero-text">
+                <h2>Find Your "Just Right" with The Three Bears Approach</h2>
+                <p>Welcome to The Three Bears Wellness, located in St. Louis. We understand that everyone's journey to better health and movement is unique. Our "Three Bears Approach" is designed to provide you with the personalized care and support you need to find your "just right" – not too much, not too little, but perfectly tailored to help you overcome posture problems, manage pain, adapt to disabilities, and recover from injuries.</p>
+                <a href="#contact" class="cta-button">Start Your Journey to Feeling Just Right!</a>
+            </div>
+        </section>
 
-<%= link_to 'Sign in with Google', '/auth/google_oauth2' %>
+        <section class="three-bears-approach">
+            <h2>Our Signature: The Three Bears Approach</h2>
+            <p>Just like in the classic tale, we believe in finding the perfect fit for your individual needs. Our "Three Bears Approach" is built on three core principles:</p>
+            <ul>
+                <li><strong>Papa Bear Strength & Stability:</strong> We focus on building a strong and stable foundation through targeted exercises. This helps improve posture, support your body, and reduce the risk of future issues. We provide a robust plan that is appropriately challenging for your current abilities.</li>
+                <li><strong>Mama Bear Movement & Mobility:</strong> We emphasize restoring and improving your range of motion and functional movement. Our programs are designed to be nurturing and progressive, helping you move with greater ease and comfort in your daily life.</li>
+                <li><strong>Baby Bear Gentle Recovery & Adaptation:</strong> We understand the importance of gentle and gradual rehabilitation and adaptation. Whether you're recovering from an injury or learning to navigate a disability, our approach is patient, supportive, and tailored to your pace and comfort level.</li>
+            </ul>
+            <p>Our experienced personal trainer, Trevor McCasland, will work closely with you to assess your unique situation and create a personalized plan that incorporates elements of all three "bears" to help you achieve your specific goals.</p>
+        </section>
+
+        <section class="specializations">
+            <h2>Specialized Areas of Focus</h2>
+            <ul>
+                <li><strong>Posture Correction:</strong> Addressing imbalances for improved alignment and reduced discomfort.</li>
+                <li><strong>Pain Management:</strong> Developing strategies to alleviate chronic pain through targeted movement and exercise.</li>
+                <li><strong>Adaptive Training for Disabilities:</strong> Creating inclusive and effective fitness programs tailored to individual abilities.</li>
+                <li><strong>Injury Rehabilitation:</strong> Guiding you through a structured and progressive recovery process (in collaboration with healthcare professionals).</li>
+                <li><strong>Functional Movement Training:</strong> Enhancing your ability to perform everyday activities with greater ease and less pain.</li>
+            </ul>
+        </section>
+
+        <section class="testimonial">
+            <p>"For years, I struggled with chronic back pain that limited my ability to enjoy even simple activities. I had tried various treatments with little success. Then I found The Three Bears Wellness. Trevor McCasland's 'Mama Bear Movement' approach was exactly what I needed - gentle yet effective exercises that gradually improved my mobility and significantly reduced my pain. It wasn't too aggressive, and it wasn't too passive; it was just right. I'm now able to walk further and enjoy my days again thanks to their caring and tailored program."</p>
+            <cite>- Maria Rodriguez, St. Louis</cite>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2>Ready to Find Your "Just Right"? Contact The Three Bears Wellness Today!</h2>
+            <p>Email: <a href="mailto:threebearswellnessstl@gmail.com">threebearswellnessstl@gmail.com</a></p>
+            <p>Phone: <a href="tel:8477324832">+1 847-732-4832</a></p>
+            <p>Located in the heart of St. Louis, Missouri.</p>
+            <a href="#" class="cta-button">Schedule Your Free Consultation!</a>
+        </section>
+    </div>
+
+    <footer>
+        <h3>Members Only!</h3>
+        <p>Please sign in with Google to access our services.</p>
+
+        <%= link_to 'Sign in with Google', '/auth/google_oauth2' %></p>
+    </footer>
+</body>
+</html>
