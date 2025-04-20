@@ -11,11 +11,12 @@ import userServiceClient from '../services/userServiceClient';
 import { User, UserRole } from '../types';
 
 interface NewUserFormProps {
-    setUser: React.Dispatch<React.SetStateAction<User>>;
+  user?: User;
+  setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
-const NewUserForm: React.FC<NewUserFormProps> = ({setUser}) => {
-  const [formData, setFormData] = useState<User>({
+const NewUserForm: React.FC<NewUserFormProps> = ({user, setUser}) => {
+  const [formData, setFormData] = useState<User>(user ?? {
     email: '',
     firstName: '',
     lastName: '',
@@ -35,8 +36,13 @@ const NewUserForm: React.FC<NewUserFormProps> = ({setUser}) => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const user = await userServiceClient.createUser(formData)
-    setUser(user)
+    if (user?.id !== undefined && user?.id !== null) {
+      await userServiceClient.updateUser(formData);
+      setUser(formData)
+      return
+    }
+    const newUser = await userServiceClient.createUser(formData)
+    setUser(newUser)
   };
 
   return (
@@ -89,7 +95,7 @@ const NewUserForm: React.FC<NewUserFormProps> = ({setUser}) => {
         <FormControlLabel value="trainer" control={<Radio />} label="Trainer" />
       </RadioGroup>
       <Button type="submit" variant="contained" color="primary" fullWidth>
-        Create User
+        {user?.id !== undefined && user?.id !== null ? 'Update' : 'Create' } User
       </Button>
     </Box>
   );

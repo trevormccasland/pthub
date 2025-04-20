@@ -15,6 +15,22 @@ const createUser = async (user: User): Promise<User> => {
     return data.user;
 }
 
+const updateUser = async (user: User): Promise<User> => {
+    const response = await fetch(`${url}`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+        throw new Error("Failed to update user");
+    }
+    const data = await response.json();
+    return data.user;
+}
+
 export default {
-    createUser
+    createUser,
+    updateUser
 }

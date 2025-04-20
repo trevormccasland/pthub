@@ -13,6 +13,7 @@ import NewUserForm from './components/NewUserForm';
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
   const [action, setAction] = useState<string>('')
+  const [isUserEdit, setIsUserEdit] = useState<boolean>(false)
   const [user, setUser] = useState<User>({
     email: '',
     firstName: '',
@@ -34,6 +35,15 @@ const App: FC = () => {
       </div>
     );
   }
+  if (isUserEdit) {
+    return (
+      <div>
+        <h1>Edit User</h1>
+        <p>Please edit your account.</p>
+        <NewUserForm user={user} setUser={setUser} />
+      </div>
+    );
+  }
   if (action === 'activity') return <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />
   if (action === 'exercise') return <ExercisePage add exercise={{name: 'changeme', level: 'stabilization', type: 'balance'}} />
   if (action === 'workout') return <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
@@ -43,6 +53,8 @@ const App: FC = () => {
         selectedList={selectedList}
         setSelectedList={setSelectedList}
         handleAddButtonClick={handleAddButtonClick}
+        user={user}
+        setIsUserEdit={setIsUserEdit}
       />
       {selectedList === 'activity' && <ActivityList />}
       {selectedList === 'exercise' && <ExerciseList />}
