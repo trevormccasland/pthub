@@ -7,12 +7,13 @@ import ExercisePage from './components/ExercisePage';
 import WorkoutPage from './components/WorkoutPage';
 import NavBar from './components/NavBar';
 import { User, UserRole } from './types';
-import NewUserForm from './components/NewUserForm';
+import UserForm from './components/UserForm';
 
 
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
   const [action, setAction] = useState<string>('')
+  const [isUserEdit, setIsUserEdit] = useState<boolean>(false)
   const [user, setUser] = useState<User>({
     email: '',
     firstName: '',
@@ -30,7 +31,16 @@ const App: FC = () => {
       <div>
         <h1>Welcome to PT Hub</h1>
         <p>Please create an account.</p>
-        <NewUserForm setUser={setUser}/>
+        <UserForm setUser={setUser}/>
+      </div>
+    );
+  }
+  if (isUserEdit) {
+    return (
+      <div>
+        <h1>Edit User</h1>
+        <p>Please edit your account.</p>
+        <UserForm user={user} setUser={setUser} />
       </div>
     );
   }
@@ -43,6 +53,8 @@ const App: FC = () => {
         selectedList={selectedList}
         setSelectedList={setSelectedList}
         handleAddButtonClick={handleAddButtonClick}
+        user={user}
+        setIsUserEdit={setIsUserEdit}
       />
       {selectedList === 'activity' && <ActivityList />}
       {selectedList === 'exercise' && <ExerciseList />}
