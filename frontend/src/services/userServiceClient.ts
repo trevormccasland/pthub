@@ -1,0 +1,20 @@
+import { User } from "../types";
+const url = 'http://localhost:3000/user'
+const createUser = async (user: User): Promise<User> => {
+    const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+    });
+    if (!response.ok) {
+        throw new Error("Failed to create user");
+    }
+    const data = await response.json();
+    return data.user;
+}
+
+export default {
+    createUser
+}
