@@ -5,6 +5,7 @@ import { Activity } from "./entity/Activity.entity";
 import activityController from "./controllers/activityController";
 import cors from 'cors'
 import exerciseController from "./controllers/exerciseController";
+import userController from "./controllers/userController";
 
 // Create a new express application instance
 const app = express();
@@ -31,6 +32,11 @@ AppDataSource.initialize().then(async () => {
     app.get("/exercise", exerciseController.getExercisesResponse);
     app.put("/exercise", exerciseController.updateExerciseResponse)
     app.post("/exercise", exerciseController.createExerciseResponse)
+
+    app.get("/user/:userId", userController.getUserResponse);
+    app.put("/user", userController.updateUserResponse)
+    app.post("/user", userController.createUserResponse)
+
     // Start the Express server
     app.listen(port, () => {
         console.log(`The server is running at http://localhost:${port}`);
