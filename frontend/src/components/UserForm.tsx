@@ -10,12 +10,12 @@ import {
 import userServiceClient from '../services/userServiceClient';
 import { User, UserRole } from '../types';
 
-interface NewUserFormProps {
+interface UserFormProps {
   user?: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
 }
 
-const NewUserForm: React.FC<NewUserFormProps> = ({user, setUser}) => {
+const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
   const [formData, setFormData] = useState<User>(user ?? {
     email: '',
     firstName: '',
@@ -101,4 +101,4 @@ const NewUserForm: React.FC<NewUserFormProps> = ({user, setUser}) => {
   );
 };
 
-export default NewUserForm;
+export default UserForm;

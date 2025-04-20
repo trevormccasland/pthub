@@ -7,7 +7,7 @@ import ExercisePage from './components/ExercisePage';
 import WorkoutPage from './components/WorkoutPage';
 import NavBar from './components/NavBar';
 import { User, UserRole } from './types';
-import NewUserForm from './components/NewUserForm';
+import UserForm from './components/UserForm';
 
 
 const App: FC = () => {
@@ -31,7 +31,7 @@ const App: FC = () => {
       <div>
         <h1>Welcome to PT Hub</h1>
         <p>Please create an account.</p>
-        <NewUserForm setUser={setUser}/>
+        <UserForm setUser={setUser}/>
       </div>
     );
   }
@@ -40,7 +40,7 @@ const App: FC = () => {
       <div>
         <h1>Edit User</h1>
         <p>Please edit your account.</p>
-        <NewUserForm user={user} setUser={setUser} />
+        <UserForm user={user} setUser={setUser} />
       </div>
     );
   }
