@@ -8,7 +8,7 @@ interface NavBarProps {
     setSelectedList: (list: string) => void;
     handleAddButtonClick: () => void;
     user: User
-    setIsUserEdit: React.Dispatch<React.SetStateAction<boolean>>
+    setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
 }
 const hoverStyle = {
   cursor: 'pointer',
@@ -18,7 +18,7 @@ const hoverStyle = {
   },
   marginRight: '2rem'
 }
-const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setIsUserEdit}) => {
+const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setPage}) => {
     const handleListChange = (event: SelectChangeEvent) => {
         setSelectedList(event.target.value);
     };
@@ -30,7 +30,7 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             alignItems="center"
             gap={1}
             sx={hoverStyle}
-            onClick={() => setIsUserEdit(true)}
+            onClick={() => setPage('profile')}
           >
             <AccountCircle />
             <Typography variant="h6">{user.firstName}</Typography>
@@ -40,7 +40,7 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             alignItems='center'
             gap={1}
             sx={hoverStyle}
-            onClick={() => setIsUserEdit(true)}>
+            onClick={() => setPage('assignments')}>
               <AddModeratorRounded />
               <Typography variant="h6">Assignments</Typography>
           </Box>}

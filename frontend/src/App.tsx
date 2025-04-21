@@ -8,12 +8,14 @@ import WorkoutPage from './components/WorkoutPage';
 import NavBar from './components/NavBar';
 import { User, UserRole } from './types';
 import UserForm from './components/UserForm';
+import { Box, Typography } from '@mui/material';
+import AssignmentList from './components/AssignmentList';
 
 
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
   const [action, setAction] = useState<string>('')
-  const [isUserEdit, setIsUserEdit] = useState<boolean>(false)
+  const [page, setPage] = useState<'profile' | 'assignments' | 'default'>('default')
   const [user, setUser] = useState<User>({
     email: '',
     firstName: '',
@@ -35,14 +37,23 @@ const App: FC = () => {
       </div>
     );
   }
-  if (isUserEdit) {
+  if (page === 'profile') {
     return (
-      <div>
-        <h1>Edit User</h1>
-        <p>Please edit your account.</p>
+      <Box>
+        <Typography variant='h1'>Edit User</Typography>
+        <Typography variant='body1'>Please edit your account.</Typography>
         <UserForm user={user} setUser={setUser} />
-      </div>
+      </Box>
     );
+  }
+  if (page === 'assignments') {
+    return (
+      <Box>
+        <Typography variant='h1'>Trainer Client Assignments</Typography>
+        <Typography variant='body1'>Match clients with trainers here.</Typography>
+        <AssignmentList />
+      </Box>
+    )
   }
   if (action === 'activity') return <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />
   if (action === 'exercise') return <ExercisePage add exercise={{name: 'changeme', level: 'stabilization', type: 'balance'}} />
@@ -54,7 +65,7 @@ const App: FC = () => {
         setSelectedList={setSelectedList}
         handleAddButtonClick={handleAddButtonClick}
         user={user}
-        setIsUserEdit={setIsUserEdit}
+        setPage={setPage}
       />
       {selectedList === 'activity' && <ActivityList />}
       {selectedList === 'exercise' && <ExerciseList />}
