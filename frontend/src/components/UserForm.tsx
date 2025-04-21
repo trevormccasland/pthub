@@ -90,9 +90,9 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
         onChange={handleChange}
         row
       >
-        <FormControlLabel value="user" control={<Radio />} label="User" />
-        <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-        <FormControlLabel value="trainer" control={<Radio />} label="Trainer" />
+        <FormControlLabel value="USER" control={<Radio />} label="User" />
+        <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
+        <FormControlLabel value="TRAINER" control={<Radio />} label="Trainer" />
       </RadioGroup>
       <Button type="submit" variant="contained" color="primary" fullWidth>
         {user?.id !== undefined && user?.id !== null ? 'Update' : 'Create' } User
