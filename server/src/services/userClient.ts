@@ -11,6 +11,11 @@ const getUser = async (id: number): Promise<User | null> => {
     return user ? user : null
 }
 
+const getUsers = async (): Promise<User[]> => {
+    const users = await AppDataSource.getRepository(User).find()
+    return users
+}
+
 const updateUser = async (user: User): Promise<User> => {
     return await AppDataSource.getRepository(User).save(user)
 }
@@ -18,5 +23,6 @@ const updateUser = async (user: User): Promise<User> => {
 export default {
     createUser,
     getUser,
+    getUsers,
     updateUser
 }

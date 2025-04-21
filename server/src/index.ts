@@ -33,7 +33,8 @@ AppDataSource.initialize().then(async () => {
     app.put("/exercise", exerciseController.updateExerciseResponse)
     app.post("/exercise", exerciseController.createExerciseResponse)
 
-    app.get("/user/:userId", userController.getUserResponse);
+    app.get("/user", userController.getUsersResponse)
+    app.get("/user/:userId", userController.getUserByIdResponse);
     app.put("/user", userController.updateUserResponse)
     app.post("/user", userController.createUserResponse)
 

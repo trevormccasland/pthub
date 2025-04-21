@@ -16,7 +16,7 @@ const createUser = async (user: User): Promise<User> => {
 }
 
 const updateUser = async (user: User): Promise<User> => {
-    const response = await fetch(`${url}`, {
+    const response = await fetch(url, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",
@@ -30,7 +30,22 @@ const updateUser = async (user: User): Promise<User> => {
     return data.user;
 }
 
+const getUsers = async (): Promise<User[]> => {
+    const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+        }
+    })
+    if (!response.ok) {
+        throw new Error("Failed to get users")
+    }
+    const data = await response.json()
+    return data.users;
+}
+
 export default {
     createUser,
-    updateUser
+    updateUser,
+    getUsers
 }

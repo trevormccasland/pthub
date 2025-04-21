@@ -7,10 +7,19 @@ export interface UserResponse {
     user: User
 }
 
-const getUserResponse = async (req: Request, res: Response<UserResponse>) => {
+export interface UsersResponse {
+    users: User[]
+}
+
+const getUserByIdResponse = async (req: Request, res: Response<UserResponse>) => {
     const userId = parseInt(req.params.userId, 10)
     const user = await userClient.getUser(userId)
     res.json({ user });
+}
+
+const getUsersResponse = async (req: Request, res: Response<UsersResponse>) => {
+    const users = await userClient.getUsers()
+    res.json({ users });
 }
 
 const updateUserResponse = async (req: Request, res: Response<UserResponse>) => {
@@ -28,7 +37,8 @@ const createUserResponse = async (req: Request, res: Response<UserResponse>) => 
 }
 
 export default {
-    getUserResponse,
+    getUserByIdResponse,
     updateUserResponse,
-    createUserResponse
+    createUserResponse,
+    getUsersResponse
 }
