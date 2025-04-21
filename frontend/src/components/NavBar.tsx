@@ -1,8 +1,8 @@
-import { AccountCircle, Add } from "@mui/icons-material";
-import { AppBar, Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
+import { AccountCircle, Add, AddModeratorRounded } from "@mui/icons-material";
+import { AppBar, Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { FC } from "react"
-import { User } from "../types";
+import { User, UserRole } from "../types";
 
 const useStyles = makeStyles({
     title: {
@@ -19,7 +19,14 @@ interface NavBarProps {
     user: User
     setIsUserEdit: React.Dispatch<React.SetStateAction<boolean>>
 }
-
+const hoverStyle = {
+  cursor: 'pointer',
+  transition: 'color 0.3s ease',
+  '&:hover': {
+    color: 'primary.main',
+  },
+  marginRight: '2rem'
+}
 const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setIsUserEdit}) => {
     const handleListChange = (event: SelectChangeEvent) => {
         setSelectedList(event.target.value);
@@ -32,17 +39,20 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             display="flex"
             alignItems="center"
             gap={1}
-            sx={{
-              cursor: 'pointer',
-              transition: 'color 0.3s ease',
-              '&:hover': {
-                color: 'primary.main',
-              }
-            }}
+            sx={hoverStyle}
             onClick={() => setIsUserEdit(true)}
           >
             <AccountCircle />
             <Typography variant="h6">{user.firstName}</Typography>
+          </Box>}
+          {user.role === UserRole.ADMIN && <Box
+            display='flex'
+            alignItems='center'
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setIsUserEdit(true)}>
+              <AddModeratorRounded />
+              <Typography variant="h6">Assignments</Typography>
           </Box>}
           <Box className={classes.title}>
             <Button color='primary' startIcon={<Add />} onClick={handleAddButtonClick}>

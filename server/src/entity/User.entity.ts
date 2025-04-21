@@ -1,9 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {
-    USER = 'user',
-    ADMIN = 'admin',
-    TRAINER = 'trainer'
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+    TRAINER = 'TRAINER'
 }
 
 @Entity()
@@ -25,4 +25,8 @@ export class User {
 
     @Column({ default: true })
     isActive: boolean;
+
+    @ManyToMany<User>(() => User)
+    @JoinTable()
+    clients: User[]
 }
