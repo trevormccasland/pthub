@@ -1,16 +1,7 @@
 import { AccountCircle, Add, AddModeratorRounded } from "@mui/icons-material";
 import { AppBar, Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { FC } from "react"
 import { User, UserRole } from "../types";
-
-const useStyles = makeStyles({
-    title: {
-        display: 'flex',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    }
-})
 
 interface NavBarProps {
     selectedList: string;
@@ -31,7 +22,6 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
     const handleListChange = (event: SelectChangeEvent) => {
         setSelectedList(event.target.value);
     };
-    const classes = useStyles()
     return <>
       <AppBar color='secondary' position="static">
         <Toolbar>
@@ -54,10 +44,9 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
               <AddModeratorRounded />
               <Typography variant="h6">Assignments</Typography>
           </Box>}
-          <Box className={classes.title}>
-            <Button color='primary' startIcon={<Add />} onClick={handleAddButtonClick}>
-              {selectedList}
-            </Button>
+          <Box display='flex' alignItems='center' sx={hoverStyle} onClick={handleAddButtonClick}>
+            <Typography variant="h6">{selectedList.toUpperCase()}</Typography>
+            <Add />
           </Box>
         </Toolbar>
       </AppBar>
