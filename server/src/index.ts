@@ -35,7 +35,7 @@ AppDataSource.initialize().then(async () => {
 
     app.get("/user", userController.getUsersResponse)
     app.get("/user/:userId", userController.getUserByIdResponse);
-    app.put("/user", userController.updateUserResponse)
+    app.put("/user", userController.updateUsersResponse)
     app.post("/user", userController.createUserResponse)
 
     // Start the Express server

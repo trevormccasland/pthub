@@ -12,17 +12,21 @@ const getUser = async (id: number): Promise<User | null> => {
 }
 
 const getUsers = async (): Promise<User[]> => {
-    const users = await AppDataSource.getRepository(User).find()
+    const users = await AppDataSource.getRepository(User).find({
+        relations: {
+            clients: true
+        }
+    })
     return users
 }
 
-const updateUser = async (user: User): Promise<User> => {
-    return await AppDataSource.getRepository(User).save(user)
+const updateUsers = async (users: User[]): Promise<User[]> => {
+    return await AppDataSource.getRepository(User).save(users)
 }
 
 export default {
     createUser,
     getUser,
     getUsers,
-    updateUser
+    updateUsers
 }

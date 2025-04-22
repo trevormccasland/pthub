@@ -22,11 +22,11 @@ const getUsersResponse = async (req: Request, res: Response<UsersResponse>) => {
     res.json({ users });
 }
 
-const updateUserResponse = async (req: Request, res: Response<UserResponse>) => {
+const updateUsersResponse = async (req: Request, res: Response<UsersResponse>) => {
     const body = req.body
-    const entity = AppDataSource.manager.create(User, body)
-    const user = await userClient.updateUser(entity)
-    res.json({user})
+    const entities = body.map(item => AppDataSource.manager.create(User, item))
+    const users = await userClient.updateUsers(entities)
+    res.json({users})
 }
 
 const createUserResponse = async (req: Request, res: Response<UserResponse>) => {
@@ -38,7 +38,7 @@ const createUserResponse = async (req: Request, res: Response<UserResponse>) => 
 
 export default {
     getUserByIdResponse,
-    updateUserResponse,
+    updateUsersResponse,
     createUserResponse,
     getUsersResponse
 }

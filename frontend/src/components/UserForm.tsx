@@ -13,15 +13,17 @@ import { User, UserRole } from '../types';
 interface UserFormProps {
   user?: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
+  setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
 }
 
-const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
+const UserForm: React.FC<UserFormProps> = ({user, setUser, setPage}) => {
   const [formData, setFormData] = useState<User>(user ?? {
     email: '',
     firstName: '',
     lastName: '',
     role: UserRole.USER,
     isActive: true,
+    clients: []
   });
 
   const handleChange = (
@@ -37,12 +39,14 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (user?.id !== undefined && user?.id !== null) {
-      await userServiceClient.updateUser(formData);
+      await userServiceClient.updateUsers([formData]);
       setUser(formData)
+      setPage('default')
       return
     }
     const newUser = await userServiceClient.createUser(formData)
     setUser(newUser)
+    setPage('default')
   };
 
   return (

@@ -62,4 +62,5 @@ export interface User {
     lastName: string
     role: UserRole
     isActive: boolean
+    clients: User[]
 }

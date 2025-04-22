@@ -9,7 +9,7 @@ import NavBar from './components/NavBar';
 import { User, UserRole } from './types';
 import UserForm from './components/UserForm';
 import { Box, Typography } from '@mui/material';
-import AssignmentList from './components/AssignmentList';
+import AssignmentPage from './components/AssignmentPage';
 
 
 const App: FC = () => {
@@ -22,18 +22,19 @@ const App: FC = () => {
     lastName: '',
     role: UserRole.USER,
     isActive: true,
+    clients: []
   })
 
   const handleAddButtonClick = () => {
     setAction(selectedList)
   };
-  console.log({user})
+
   if (user.id === undefined || user.id === null) {
     return (
       <div>
         <h1>Welcome to PT Hub</h1>
         <p>Please create an account.</p>
-        <UserForm setUser={setUser}/>
+        <UserForm setUser={setUser} setPage={setPage}/>
       </div>
     );
   }
@@ -42,7 +43,7 @@ const App: FC = () => {
       <Box>
         <Typography variant='h1'>Edit User</Typography>
         <Typography variant='body1'>Please edit your account.</Typography>
-        <UserForm user={user} setUser={setUser} />
+        <UserForm user={user} setUser={setUser} setPage={setPage} />
       </Box>
     );
   }
@@ -51,7 +52,7 @@ const App: FC = () => {
       <Box>
         <Typography variant='h1'>Trainer Client Assignments</Typography>
         <Typography variant='body1'>Match clients with trainers here.</Typography>
-        <AssignmentList />
+        <AssignmentPage />
       </Box>
     )
   }
