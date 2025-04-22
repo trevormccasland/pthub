@@ -7,17 +7,26 @@ export interface UserResponse {
     user: User
 }
 
-const getUserResponse = async (req: Request, res: Response<UserResponse>) => {
+export interface UsersResponse {
+    users: User[]
+}
+
+const getUserByIdResponse = async (req: Request, res: Response<UserResponse>) => {
     const userId = parseInt(req.params.userId, 10)
     const user = await userClient.getUser(userId)
     res.json({ user });
 }
 
-const updateUserResponse = async (req: Request, res: Response<UserResponse>) => {
+const getUsersResponse = async (req: Request, res: Response<UsersResponse>) => {
+    const users = await userClient.getUsers()
+    res.json({ users });
+}
+
+const updateUsersResponse = async (req: Request, res: Response<UsersResponse>) => {
     const body = req.body
-    const entity = AppDataSource.manager.create(User, body)
-    const user = await userClient.updateUser(entity)
-    res.json({user})
+    const entities = body.map(item => AppDataSource.manager.create(User, item))
+    const users = await userClient.updateUsers(entities)
+    res.json({users})
 }
 
 const createUserResponse = async (req: Request, res: Response<UserResponse>) => {
@@ -28,7 +37,8 @@ const createUserResponse = async (req: Request, res: Response<UserResponse>) => 
 }
 
 export default {
-    getUserResponse,
-    updateUserResponse,
-    createUserResponse
+    getUserByIdResponse,
+    updateUsersResponse,
+    createUserResponse,
+    getUsersResponse
 }

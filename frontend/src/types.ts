@@ -50,9 +50,9 @@ export interface SubjectExercise {
 }
 
 export enum UserRole {
-    USER = 'user',
-    ADMIN = 'admin',
-    TRAINER = 'trainer'
+    USER = 'USER',
+    ADMIN = 'ADMIN',
+    TRAINER = 'TRAINER'
 }
 
 export interface User {
@@ -62,4 +62,5 @@ export interface User {
     lastName: string
     role: UserRole
     isActive: boolean
+    clients: User[]
 }

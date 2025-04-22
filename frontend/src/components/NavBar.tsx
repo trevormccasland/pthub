@@ -1,30 +1,27 @@
-import { AccountCircle, Add } from "@mui/icons-material";
-import { AppBar, Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
-import { makeStyles } from "@mui/styles";
+import { AccountCircle, Add, AddModeratorRounded } from "@mui/icons-material";
+import { AppBar, Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
-import { User } from "../types";
-
-const useStyles = makeStyles({
-    title: {
-        display: 'flex',
-        marginLeft: 'auto',
-        marginRight: 'auto',
-    }
-})
+import { User, UserRole } from "../types";
 
 interface NavBarProps {
     selectedList: string;
     setSelectedList: (list: string) => void;
     handleAddButtonClick: () => void;
     user: User
-    setIsUserEdit: React.Dispatch<React.SetStateAction<boolean>>
+    setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
 }
-
-const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setIsUserEdit}) => {
+const hoverStyle = {
+  cursor: 'pointer',
+  transition: 'color 0.3s ease',
+  '&:hover': {
+    color: 'primary.main',
+  },
+  marginRight: '2rem'
+}
+const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setPage}) => {
     const handleListChange = (event: SelectChangeEvent) => {
         setSelectedList(event.target.value);
     };
-    const classes = useStyles()
     return <>
       <AppBar color='secondary' position="static">
         <Toolbar>
@@ -32,22 +29,24 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             display="flex"
             alignItems="center"
             gap={1}
-            sx={{
-              cursor: 'pointer',
-              transition: 'color 0.3s ease',
-              '&:hover': {
-                color: 'primary.main',
-              }
-            }}
-            onClick={() => setIsUserEdit(true)}
+            sx={hoverStyle}
+            onClick={() => setPage('profile')}
           >
             <AccountCircle />
             <Typography variant="h6">{user.firstName}</Typography>
           </Box>}
-          <Box className={classes.title}>
-            <Button color='primary' startIcon={<Add />} onClick={handleAddButtonClick}>
-              {selectedList}
-            </Button>
+          {user.role === UserRole.ADMIN && <Box
+            display='flex'
+            alignItems='center'
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('assignments')}>
+              <AddModeratorRounded />
+              <Typography variant="h6">Assignments</Typography>
+          </Box>}
+          <Box display='flex' alignItems='center' sx={hoverStyle} onClick={handleAddButtonClick}>
+            <Typography variant="h6">{selectedList.toUpperCase()}</Typography>
+            <Add />
           </Box>
         </Toolbar>
       </AppBar>

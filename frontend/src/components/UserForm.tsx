@@ -13,15 +13,17 @@ import { User, UserRole } from '../types';
 interface UserFormProps {
   user?: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
+  setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
 }
 
-const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
+const UserForm: React.FC<UserFormProps> = ({user, setUser, setPage}) => {
   const [formData, setFormData] = useState<User>(user ?? {
     email: '',
     firstName: '',
     lastName: '',
     role: UserRole.USER,
     isActive: true,
+    clients: []
   });
 
   const handleChange = (
@@ -37,12 +39,14 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (user?.id !== undefined && user?.id !== null) {
-      await userServiceClient.updateUser(formData);
+      await userServiceClient.updateUsers([formData]);
       setUser(formData)
+      setPage('default')
       return
     }
     const newUser = await userServiceClient.createUser(formData)
     setUser(newUser)
+    setPage('default')
   };
 
   return (
@@ -90,9 +94,9 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser}) => {
         onChange={handleChange}
         row
       >
-        <FormControlLabel value="user" control={<Radio />} label="User" />
-        <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-        <FormControlLabel value="trainer" control={<Radio />} label="Trainer" />
+        <FormControlLabel value="USER" control={<Radio />} label="User" />
+        <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
+        <FormControlLabel value="TRAINER" control={<Radio />} label="Trainer" />
       </RadioGroup>
       <Button type="submit" variant="contained" color="primary" fullWidth>
         {user?.id !== undefined && user?.id !== null ? 'Update' : 'Create' } User
