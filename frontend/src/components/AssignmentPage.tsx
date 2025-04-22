@@ -1,8 +1,8 @@
 import React, { FC, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
 import userServiceClient from "../services/userServiceClient";
 import { User, UserRole } from "../types";
-import { Autocomplete, Box, Button, Container, List, ListItem, ListItemIcon, ListItemText, Stack, TextField, Typography } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Autocomplete, Box, Button, Container, IconButton, List, ListItem, ListItemIcon, ListItemText, Stack, TextField, Typography } from "@mui/material";
+import { Add, Delete } from "@mui/icons-material";
 
 const AssignmentPage: FC = () => {
     const [userGroups, setUserGroups] = useState<Record<keyof typeof UserRole, User[]>>({
@@ -11,53 +11,71 @@ const AssignmentPage: FC = () => {
         'USER': []
     })
     const [selectedClient, setSelectedClient] = useState<Record<number, User | null>>({})
-    const [addedClients, setAddedClients] = useState<Record<number, User[]>>({})
+    const [clientChanges, setClientChanges] = useState<Record<number, { added: User[]; removed: User[] }>>({});
     const handleAddClient = useCallback((trainerId: number) => {
-        if (Object.keys(selectedClient).length > 0) {
-            setAddedClients(prev => {
-                const updated = {...prev}
-                if (trainerId in updated) {
-                    if (selectedClient[trainerId] !== null) {
-                        updated[trainerId] = [...updated[trainerId], selectedClient[trainerId]]
-                    }
-                } else if (selectedClient[trainerId] !== null) {
-                    updated[trainerId] = [selectedClient[trainerId]]
+        if (selectedClient[trainerId]) {
+            setClientChanges((prev) => {
+                const updated = { ...prev };
+                if (!updated[trainerId]) {
+                    updated[trainerId] = { added: [], removed: [] };
                 }
-                return updated
-            })        
+                // Add the client to the "added" list if not already present
+                if (!updated[trainerId].added.some((client) => client.id === selectedClient[trainerId]?.id)) {
+                    updated[trainerId].added.push(selectedClient[trainerId]!);
+                }
+                // Remove the client from the "removed" list if it exists there
+                updated[trainerId].removed = updated[trainerId].removed.filter(
+                    (client) => client.id !== selectedClient[trainerId]?.id
+                );
+                return updated;
+            });
+            setSelectedClient((prev) => {
+                const updated = { ...prev };
+                updated[trainerId] = null;
+                return updated;
+            });
         }
-        setSelectedClient((prev) => {
-            const updated = {...prev}
-            if (trainerId in updated) {
-                updated[trainerId] = null
+    }, [selectedClient]);
+    const handleRemoveClient = useCallback((trainerId: number, client: User) => {
+        setClientChanges((prev) => {
+            const updated = { ...prev };
+            if (!updated[trainerId]) {
+                updated[trainerId] = { added: [], removed: [] };
             }
-            return updated
-        })
-
-    }, [selectedClient, setSelectedClient, setAddedClients])
+            // Add the client to the "removed" list if not already present
+            if (!updated[trainerId].removed.some((removedClient) => removedClient.id === client.id)) {
+                updated[trainerId].removed.push(client);
+            }
+            // Remove the client from the "added" list if it exists there
+            updated[trainerId].added = updated[trainerId].added.filter((addedClient) => addedClient.id !== client.id);
+            return updated;
+        });
+    }, []);
     const handleUpdateClients = async () => {
         try {
-            if (addedClients) {
+            if (clientChanges) {
                 await userServiceClient.updateUsers(userGroups.TRAINER.reduce<User[]>((acc, trainer) => {
-                    if (trainer.id !== undefined && trainer.id in addedClients) {
-                        acc.push(
-                            {
-                                ...trainer,
-                                clients: trainer.clients.concat(addedClients[trainer.id])
-                            }
-                        )
+                    if (trainer.id !== undefined && clientChanges[trainer.id]) {
+                        const { added, removed } = clientChanges[trainer.id];
+                        acc.push({
+                            ...trainer,
+                            clients: trainer.clients
+                                .filter((client) => !removed.some((removedClient) => removedClient.id === client.id))
+                                .concat(added)
+                        });
                     } else {
-                        acc.push(trainer)
+                        acc.push(trainer);
                     }
-                    return acc
+                    return acc;
                 }, []));
             }
-            alert('Assignmets updated successfully!');
+            alert('Assignments updated successfully!');
         } catch (error) {
             console.error('Error updating assignments:', error);
             alert('Failed to update assignments.');
         }
-    }
+    };
+
     useEffect(() => {
         const callGetUsers = async () => {
             const allUsers = await userServiceClient.getUsers()
@@ -84,12 +102,12 @@ const AssignmentPage: FC = () => {
         callGetUsers()
     }, [])
     const options = useMemo(() => userGroups.USER.reduce<User[]>((acc, user) => {
-        if (Object.values(addedClients).flat().some(update => update.id === user.id)) {
-            return acc
+        if (Object.values(clientChanges).flatMap((change) => change.added).some((addedClient) => addedClient.id === user.id)) {
+            return acc;
         }
-        acc.push(user)
-        return acc
-    }, []), [addedClients, userGroups.USER])
+        acc.push(user);
+        return acc;
+    }, []), [clientChanges, userGroups.USER]);
     return <Container>
         <Stack direction='column'>
             {userGroups.TRAINER.reduce<ReactElement[]>((result, trainer) => {
@@ -102,7 +120,7 @@ const AssignmentPage: FC = () => {
                         <Typography variant="h6">Clients</Typography>
                         <Autocomplete
                             options={options}
-                            getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+                            getOptionLabel={(option) => `${option.firstName} ${option.lastName} ${option.email}`}
                             value={selectedClient[trainer?.id] ?? null}
                             isOptionEqualToValue={(option, value) => option.id === value.id}
                             onChange={(_, newValue) => setSelectedClient((prev) => {
@@ -120,13 +138,34 @@ const AssignmentPage: FC = () => {
                             Add Client
                         </Button>
                         <List>
-                            {trainer.clients.concat(trainer.id in addedClients ? addedClients[trainer.id] : []).map(user => (
-                                <ListItem key={`${user.id}-${trainer.id}`}>
-                                    <ListItemText>
-                                        {`Client ${user.firstName} ${user.lastName}`}
-                                    </ListItemText>
-                                </ListItem>
-                            ))}
+                            {trainer.clients
+                                .filter(
+                                    (client) =>
+                                        (
+                                            clientChanges[trainer.id!]?.removed.every(
+                                                (removedClient) => removedClient.id !== client.id
+                                            ) ?? true
+                                        )
+                                )
+                                .concat(clientChanges[trainer.id]?.added || [])
+                                .map((user) => (
+                                    <ListItem
+                                        key={`trainer-${trainer.id}-client-${user.id}`}
+                                        secondaryAction={
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="delete"
+                                                onClick={() => handleRemoveClient(trainer.id as number, user)}
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        }
+                                    >
+                                        <ListItemText>
+                                            {`Client ${user.firstName} ${user.lastName}`}
+                                        </ListItemText>
+                                    </ListItem>
+                                ))}
                         </List>
                     </Box>)
                 }
