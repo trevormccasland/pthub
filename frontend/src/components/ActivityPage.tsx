@@ -4,6 +4,7 @@ import { Autocomplete, Box, Button, Container, Divider, IconButton, List, ListIt
 import { makeStyles } from "@mui/styles"
 import { Add, Delete } from "@mui/icons-material"
 import exerciseServiceClient from "../services/exerciseServiceClient"
+import activityServiceClient from "../services/activityServiceClient"
 
 interface ActivityPageProps {
     activity: Activity
@@ -76,6 +77,26 @@ const ActivityPage: FC<ActivityPageProps> = ({activity, add }) => {
         },
         [setUpdates, selectedExericse, setSelectedExercise]
     );
+    const handleCreateActivity = async () => {
+        try {
+            await activityServiceClient.createActivity(updates)
+            alert('Activity created successfully!')
+        }
+        catch (error) {
+            console.error('Error creating activity', error)
+            alert('Failed to create activity')
+        }
+    }
+    const handleUpdateActivty = async () => {
+        try {
+            await activityServiceClient.updateActivity(updates)
+            alert('Activity updated successfully!')
+        }
+        catch (error) {
+            console.error('Error updating activity', error)
+            alert('Failed to update activity')
+        }
+    }
     return <Container>
         <Stack direction='column'>
             <Box className={classes.title}>
@@ -116,6 +137,14 @@ const ActivityPage: FC<ActivityPageProps> = ({activity, add }) => {
                         </Stack>
                     ))}
                 </List>
+            </Stack>
+            <Stack direction="row-reverse" spacing={2}>
+                <Button variant="contained" onClick={() => add ? handleCreateActivity() : handleUpdateActivty()}>
+                    {add ? 'Create Activity' : 'Update Activity'}
+                </Button>
+                <Button variant="contained" onClick={() => setUpdates({...activity})}>
+                    Clear
+                </Button>
             </Stack>
         </Stack>
     </Container>
