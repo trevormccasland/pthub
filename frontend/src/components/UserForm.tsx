@@ -8,12 +8,12 @@ import {
   Box,
 } from '@mui/material';
 import userServiceClient from '../services/userServiceClient';
-import { User, UserRole } from '../types';
+import { Page, User, UserRole } from '../types';
 
 interface UserFormProps {
   user?: User;
   setUser: React.Dispatch<React.SetStateAction<User>>;
-  setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
+  setPage: React.Dispatch<React.SetStateAction<Page>>
 }
 
 const UserForm: React.FC<UserFormProps> = ({user, setUser, setPage}) => {

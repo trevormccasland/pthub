@@ -64,3 +64,5 @@ export interface User {
     isActive: boolean
     clients: User[]
 }
+
+export type Page = 'signup' | 'profile' | 'assignments' | 'default' | 'login'

@@ -1,14 +1,14 @@
 import { AccountCircle, Add, AddModeratorRounded } from "@mui/icons-material";
 import { AppBar, Box, Button, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
-import { User, UserRole } from "../types";
+import { Page, User, UserRole } from "../types";
 
 interface NavBarProps {
     selectedList: string;
     setSelectedList: (list: string) => void;
     handleAddButtonClick: () => void;
     user: User
-    setPage: React.Dispatch<React.SetStateAction<"profile" | "assignments" | "default">>
+    setPage: React.Dispatch<React.SetStateAction<Page>>
 }
 const hoverStyle = {
   cursor: 'pointer',

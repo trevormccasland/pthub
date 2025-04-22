@@ -6,16 +6,17 @@ import ActivityPage from './components/ActivityPage';
 import ExercisePage from './components/ExercisePage';
 import WorkoutPage from './components/WorkoutPage';
 import NavBar from './components/NavBar';
-import { User, UserRole } from './types';
+import { Page, User, UserRole } from './types';
 import UserForm from './components/UserForm';
 import { Box, Typography } from '@mui/material';
 import AssignmentPage from './components/AssignmentPage';
+import LoginPage from './components/LoginPage';
 
 
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
   const [action, setAction] = useState<string>('')
-  const [page, setPage] = useState<'profile' | 'assignments' | 'default'>('default')
+  const [page, setPage] = useState<Page>('login')
   const [user, setUser] = useState<User>({
     email: '',
     firstName: '',
@@ -29,7 +30,13 @@ const App: FC = () => {
     setAction(selectedList)
   };
 
-  if (user.id === undefined || user.id === null) {
+  <Typography variant='h1'>Welcome to PT Hub</Typography>
+  if (page == 'login') {
+    return (
+      <LoginPage setUser={setUser} setPage={setPage}/>
+    );
+  }
+  if (page === 'signup') {
     return (
       <div>
         <h1>Welcome to PT Hub</h1>
