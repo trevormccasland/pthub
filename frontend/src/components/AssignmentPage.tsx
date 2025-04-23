@@ -1,15 +1,12 @@
-import React, { FC, ReactElement, useCallback, useEffect, useMemo, useState } from "react";
+import React, { FC, ReactElement, useCallback, useMemo, useState } from "react";
 import userServiceClient from "../services/userServiceClient";
-import { User, UserRole } from "../types";
+import { User } from "../types";
 import { Autocomplete, Box, Button, Container, IconButton, List, ListItem, ListItemIcon, ListItemText, Stack, TextField, Typography } from "@mui/material";
 import { Add, Delete } from "@mui/icons-material";
+import { useUserGroups } from "../hooks/users";
 
 const AssignmentPage: FC = () => {
-    const [userGroups, setUserGroups] = useState<Record<keyof typeof UserRole, User[]>>({
-        'ADMIN': [],
-        'TRAINER': [],
-        'USER': []
-    })
+    const userGroups = useUserGroups()
     const [selectedClient, setSelectedClient] = useState<Record<number, User | null>>({})
     const [clientChanges, setClientChanges] = useState<Record<number, { added: User[]; removed: User[] }>>({});
     const handleAddClient = useCallback((trainerId: number) => {
@@ -76,31 +73,6 @@ const AssignmentPage: FC = () => {
         }
     };
 
-    useEffect(() => {
-        const callGetUsers = async () => {
-            const allUsers = await userServiceClient.getUsers()
-            const users: User[] = []
-            const trainers: User[] = []
-            const admins: User[] = []
-            allUsers.forEach(user => {
-                if (user.id) {
-                    if (user.role === UserRole.USER) {
-                        users.push(user)
-                    } else if (user.role === UserRole.TRAINER) {
-                        trainers.push(user)
-                    } else if (user.role === UserRole.ADMIN) {
-                        admins.push(user)
-                    }
-                }
-            })
-            setUserGroups({
-                'TRAINER': trainers,
-                'USER': users,
-                'ADMIN': admins
-            })
-        }
-        callGetUsers()
-    }, [])
     const options = useMemo(() => userGroups.USER.reduce<User[]>((acc, user) => {
         if (Object.values(clientChanges).flatMap((change) => change.added).some((addedClient) => addedClient.id === user.id)) {
             return acc;
