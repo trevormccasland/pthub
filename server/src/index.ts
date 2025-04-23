@@ -6,6 +6,9 @@ import activityController from "./controllers/activityController";
 import cors from 'cors'
 import exerciseController from "./controllers/exerciseController";
 import userController from "./controllers/userController";
+import emailController from "./controllers/emailController";
+import dotenv from 'dotenv'
+dotenv.config()
 
 // Create a new express application instance
 const app = express();
@@ -37,6 +40,8 @@ AppDataSource.initialize().then(async () => {
     app.get("/user/:userId", userController.getUserByIdResponse);
     app.put("/user", userController.updateUsersResponse)
     app.post("/user", userController.createUserResponse)
+
+    app.post("/email/send", emailController.sendEmailResponse)
 
     // Start the Express server
     app.listen(port, () => {
