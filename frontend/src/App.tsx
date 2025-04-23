@@ -11,6 +11,7 @@ import UserForm from './components/UserForm';
 import { Box, Typography } from '@mui/material';
 import AssignmentPage from './components/AssignmentPage';
 import LoginPage from './components/LoginPage';
+import ClientsPage from './components/ClientsPage';
 
 
 const App: FC = () => {
@@ -60,6 +61,15 @@ const App: FC = () => {
         <Typography variant='h1'>Trainer Client Assignments</Typography>
         <Typography variant='body1'>Match clients with trainers here.</Typography>
         <AssignmentPage />
+      </Box>
+    )
+  }
+  if (page === 'clients') {
+    return (
+      <Box>
+        <Typography variant='h1'>Clients</Typography>
+        <Typography variant='body1'>View and manage your clients here.</Typography>
+        <ClientsPage user={user} setPage={setPage} />
       </Box>
     )
   }
