@@ -65,4 +65,4 @@ export interface User {
     clients: User[]
 }
 
-export type Page = 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login'
+export type Page = 'trainers' | 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login'
