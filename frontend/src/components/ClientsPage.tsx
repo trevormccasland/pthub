@@ -26,9 +26,11 @@ const ClientsPage: FC<ClientsPageProps> = ({user}) => {
     };
     const handleSendEmail = () => {
         const callSendEmail = async () => {
-            // Logic to send email goes here
-            await emailServiceClient.sendEmail(user.email, selectedEmail, emailContent.subject, emailContent.body);
-        }
+            // TODO: Replace with actual email sending logic
+            const mailtoLink = `mailto:${selectedEmail}?subject=${encodeURIComponent(
+                emailContent.subject
+            )}&body=${encodeURIComponent(emailContent.body)}`;
+            window.location.href = mailtoLink;        }
         callSendEmail().then((message) => {
             console.log(message);
         }).catch((error) => {
@@ -84,9 +86,9 @@ const ClientsPage: FC<ClientsPageProps> = ({user}) => {
                     <Button onClick={handleCloseDialog} color="secondary">
                         Cancel
                     </Button>
-                    {/* <Button onClick={handleSendEmail} color="primary" variant="contained">
+                    <Button onClick={handleSendEmail} color="primary" variant="contained">
                         Send
-                    </Button> */}
+                    </Button>
                 </DialogActions>
             </Dialog>
     </Container>
