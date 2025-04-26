@@ -12,6 +12,7 @@ import { Box, Typography } from '@mui/material';
 import AssignmentPage from './components/AssignmentPage';
 import LoginPage from './components/LoginPage';
 import ClientsPage from './components/ClientsPage';
+import TrainerGrid from './components/TrainerGrid';
 
 
 const App: FC = () => {
@@ -32,7 +33,7 @@ const App: FC = () => {
   };
 
   <Typography variant='h1'>Welcome to PT Hub</Typography>
-  if (page == 'login') {
+  if (page === 'login') {
     return (
       <LoginPage setUser={setUser} setPage={setPage}/>
     );
@@ -61,6 +62,15 @@ const App: FC = () => {
         <Typography variant='h1'>Trainer Client Assignments</Typography>
         <Typography variant='body1'>Match clients with trainers here.</Typography>
         <AssignmentPage />
+      </Box>
+    )
+  }
+  if (page === 'trainers') {
+    return (
+      <Box>
+        <Typography variant='h1'>Trainers</Typography>
+        <Typography variant='body1'>View and manage your trainers here.</Typography>
+        <TrainerGrid user={user} />
       </Box>
     )
   }
