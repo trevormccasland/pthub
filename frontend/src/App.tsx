@@ -25,7 +25,8 @@ const App: FC = () => {
     lastName: '',
     role: UserRole.USER,
     isActive: true,
-    clients: []
+    clients: [],
+    instagramHandle: ''
   })
 
   const handleAddButtonClick = () => {

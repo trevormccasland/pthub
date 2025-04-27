@@ -34,7 +34,7 @@ const TrainerGrid: FC<TrainerGridProps> = ({ user }) => {
                             <CardMedia
                                 component='iframe'
                                 height="200"
-                                src="https://www.instagram.com/trevormccaslandfitness/embed"
+                                src={`https://www.instagram.com/${trainer.instagramHandle}/embed`}
                             />
                             <CardContent>
                                 <Typography variant="h6" component="div" gutterBottom>

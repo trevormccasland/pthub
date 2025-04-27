@@ -63,6 +63,7 @@ export interface User {
     role: UserRole
     isActive: boolean
     clients: User[]
+    instagramHandle: string | null
 }
 
 export type Page = 'trainers' | 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login'

@@ -29,4 +29,7 @@ export class User {
     @ManyToMany<User>(() => User)
     @JoinTable()
     clients: User[]
+
+    @Column({unique: true, nullable: true })
+    instagramHandle: string;
 }
