@@ -7,6 +7,7 @@ import cors from 'cors'
 import exerciseController from "./controllers/exerciseController";
 import userController from "./controllers/userController";
 import emailController from "./controllers/emailController";
+import availabilityController from "./controllers/availabilityController";
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -43,6 +44,9 @@ AppDataSource.initialize().then(async () => {
 
     app.post("/email/send", emailController.sendEmailResponse)
 
+    app.get("/availability", availabilityController.getAvailabilitiesResponse);
+    app.put("/availability", availabilityController.updateAvailabilityResponse)
+    app.post("/availability", availabilityController.createAvailabilityResponse)
     // Start the Express server
     app.listen(port, () => {
         console.log(`The server is running at http://localhost:${port}`);

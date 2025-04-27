@@ -1,4 +1,5 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Availability } from "./Availability.entity";
 
 export enum UserRole {
     USER = 'USER',
@@ -32,4 +33,8 @@ export class User {
 
     @Column({unique: true, nullable: true })
     instagramHandle: string;
+
+    @OneToMany<Availability>(() => Availability, 'userId')
+    @JoinTable()
+    availabilities: Availability[]
 }

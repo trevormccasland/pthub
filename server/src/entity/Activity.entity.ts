@@ -15,7 +15,7 @@ export class Activity {
     @Column()
     name: string
 
-    @ManyToMany(() => Exercise)
+    @ManyToMany<Exercise>(() => Exercise)
     @JoinTable()
     group: Exercise[]
 
