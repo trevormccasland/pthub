@@ -1,4 +1,4 @@
-import { AccountCircle, Add, AddModeratorRounded, Diversity1, MedicalServices } from "@mui/icons-material";
+import { AccountCircle, Add, AddModeratorRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
 import { AppBar, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
 import { Page, User, UserRole } from "../types";
@@ -9,6 +9,7 @@ interface NavBarProps {
     handleAddButtonClick: () => void;
     user: User
     setPage: React.Dispatch<React.SetStateAction<Page>>
+    hideAdd?: boolean
 }
 const hoverStyle = {
   cursor: 'pointer',
@@ -18,13 +19,22 @@ const hoverStyle = {
   },
   marginRight: '2rem'
 }
-const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setPage}) => {
+const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButtonClick, user, setPage, hideAdd}) => {
     const handleListChange = (event: SelectChangeEvent) => {
         setSelectedList(event.target.value);
     };
     return <>
       <AppBar color='secondary' position="static">
         <Toolbar>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('default')}>
+              <Home />
+              <Typography variant="h6">Home</Typography>
+          </Box>
           {user.id !== null && user.id !== undefined && <Box
             display="flex"
             alignItems="center"
@@ -62,13 +72,13 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
               <MedicalServices />
               <Typography variant="h6">Clients</Typography>
           </Box>}
-          <Box display='flex' alignItems='center' sx={hoverStyle} onClick={handleAddButtonClick}>
+          {!hideAdd && <Box display='flex' alignItems='center' sx={hoverStyle} onClick={handleAddButtonClick}>
             <Typography variant="h6">{selectedList.toUpperCase()}</Typography>
             <Add />
-          </Box>
+          </Box>}
         </Toolbar>
       </AppBar>
-      <Stack>
+      {!hideAdd && <Stack>
           <FormControl fullWidth>
           <Select
               labelId="list-select-label"
@@ -82,7 +92,7 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
               <MenuItem value={'workout'}>Workout List</MenuItem>
           </Select>
           </FormControl>
-      </Stack>
+      </Stack>}
     </>
 }
 
