@@ -23,7 +23,8 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser, setPage}) => {
     lastName: '',
     role: UserRole.USER,
     isActive: true,
-    clients: []
+    clients: [],
+    instagramHandle: ''
   });
 
   const handleChange = (
@@ -98,6 +99,17 @@ const UserForm: React.FC<UserFormProps> = ({user, setUser, setPage}) => {
         <FormControlLabel value="ADMIN" control={<Radio />} label="Admin" />
         <FormControlLabel value="TRAINER" control={<Radio />} label="Trainer" />
       </RadioGroup>
+      {formData.role === UserRole.TRAINER && (
+        <TextField
+          label='Instagram Handle'
+          name='instagramHandle'
+          type='text'
+          value={formData.instagramHandle}
+          onChange={handleChange}
+          required
+          fullWidth
+        />
+      )}
       <Button type="submit" variant="contained" color="primary" fullWidth>
         {user?.id !== undefined && user?.id !== null ? 'Update' : 'Create' } User
       </Button>
