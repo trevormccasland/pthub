@@ -66,4 +66,4 @@ export interface User {
     instagramHandle: string | null
 }
 
-export type Page = 'trainers' | 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login'
+export type Page = 'trainers' | 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login' | 'workout' | 'exercise' | 'activity' 

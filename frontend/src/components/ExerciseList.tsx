@@ -1,12 +1,17 @@
 import { List, ListItem, ListItemText, ListItemButton, ListItemIcon, Box, Stack } from "@mui/material"
-import { useEffect, useState } from "react"
-import { Exercise } from "../types"
+import { FC, useEffect, useState } from "react"
+import { Activity, Exercise, Page, Workout } from "../types"
 import exerciseServiceClient from "../services/exerciseServiceClient";
 import ExercisePage from "../pages/ExercisePage";
 import ExerciseCard from "./ExerciseCard";
 import { ModeEdit, Visibility } from "@mui/icons-material";
 
-const ExerciseList = () => {
+interface ExerciseListProps {
+    setSelectedItem: React.Dispatch<React.SetStateAction<Workout | Exercise | Activity | undefined>>;
+    setPage: React.Dispatch<React.SetStateAction<Page>>;
+}
+
+const ExerciseList: FC<ExerciseListProps> = ({setSelectedItem, setPage}) => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [view, setView] = useState({
         edit: false,
@@ -24,7 +29,8 @@ const ExerciseList = () => {
         return <ExerciseCard exercise={exercises[view.index]} />
     }
     if (view.edit) {
-        return <ExercisePage exercise={exercises[view.index]} />
+        setPage('exercise')
+        setSelectedItem(exercises[view.index])
     }
     return <List>
         {exercises.map((exercise, i) => (

@@ -6,7 +6,7 @@ import ActivityPage from './pages/ActivityPage';
 import ExercisePage from './pages/ExercisePage';
 import WorkoutPage from './pages/WorkoutPage';
 import NavBar from './components/NavBar';
-import { Page, User, UserRole } from './types';
+import { Activity, Exercise, Page, User, UserRole, Workout } from './types';
 import UserForm from './components/UserForm';
 import { Box, Typography } from '@mui/material';
 import AssignmentPage from './pages/AssignmentPage';
@@ -17,6 +17,7 @@ import TrainerGrid from './components/TrainerGrid';
 
 const App: FC = () => {
   const [selectedList, setSelectedList] = useState<string>('workout');
+  const [selectedItem, setSelectedItem] = useState<Workout | Exercise | Activity>();
   const [action, setAction] = useState<string>('')
   const [page, setPage] = useState<Page>('login')
   const [user, setUser] = useState<User>({
@@ -81,6 +82,24 @@ const App: FC = () => {
         </Box>
       )
     }
+    else if (page === 'workout' ) {
+      component = <WorkoutPage workout={selectedItem as Workout} />
+    }
+    else if (page === 'exercise') {
+      component = <ExercisePage exercise={selectedItem as Exercise} />
+    }
+    else if (page === 'activity') {
+      component = <ActivityPage activity={selectedItem as Activity} />
+    }
+    else if (action === 'activity' && page === 'default') {
+      component = <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />
+    }
+    else if (action === 'exercise' && page === 'default') {
+      component = <ExercisePage add exercise={{name: 'changeme', level: 'stabilization', type: 'balance'}} />
+    }
+    else if (action === 'workout' && page === 'default') {
+      component = <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
+    }
     else if (action === 'activity') {
       component = <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />
     }
@@ -91,13 +110,13 @@ const App: FC = () => {
       component = <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
     }
     else if (selectedList === 'activity') {
-      component = <ActivityList />
+      component = <ActivityList setSelectedItem={setSelectedItem} setPage={setPage} />
     }
     else if (selectedList === 'exercise') {
-      component = <ExerciseList />
+      component = <ExerciseList setSelectedItem={setSelectedItem} setPage={setPage} />
     }
     else if (selectedList === 'workout') {
-      component = <WorkoutList />
+      component = <WorkoutList setSelectedItem={setSelectedItem} setPage={setPage} />
     }
     return (
       <>
