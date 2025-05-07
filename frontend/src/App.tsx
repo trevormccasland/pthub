@@ -13,6 +13,8 @@ import AssignmentPage from './pages/AssignmentPage';
 import LoginPage from './pages/LoginPage';
 import ClientsPage from './pages/ClientsPage';
 import TrainerGrid from './components/TrainerGrid';
+import AvailabilityPage from './pages/AvailabilityPage';
+import ReservationPage from './pages/ReservationPage';
 
 
 const App: FC = () => {
@@ -27,7 +29,9 @@ const App: FC = () => {
     role: UserRole.USER,
     isActive: true,
     clients: [],
-    instagramHandle: ''
+    instagramHandle: '',
+    reservations: [],
+    availabilities: []
   })
 
   const handleAddButtonClick = () => {
@@ -90,6 +94,12 @@ const App: FC = () => {
     }
     else if (page === 'activity') {
       component = <ActivityPage activity={selectedItem as Activity} />
+    }
+    else if (page === 'availability') {
+      component = <AvailabilityPage user={user} setPage={setPage} />
+    }
+    else if (page === 'reservation') {
+      component = <ReservationPage user={user} setPage={setPage} />
     }
     else if (action === 'activity' && page === 'default') {
       component = <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />

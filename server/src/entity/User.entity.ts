@@ -1,5 +1,6 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Availability } from "./Availability.entity";
+import { Reservation } from "./Reservation.entity";
 
 export enum UserRole {
     USER = 'USER',
@@ -34,7 +35,11 @@ export class User {
     @Column({unique: true, nullable: true })
     instagramHandle: string;
 
-    @OneToMany<Availability>(() => Availability, 'userId')
-    @JoinTable()
+    @OneToMany<Availability>(() => Availability, availability => availability.user, {onDelete: 'CASCADE'})
+    @JoinColumn()
     availabilities: Availability[]
+
+    @OneToMany<Reservation>(() => Reservation, reservation => reservation.user, {onDelete: 'CASCADE'})
+    @JoinColumn()
+    reservations: Reservation[]
 }

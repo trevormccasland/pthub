@@ -1,5 +1,8 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, JoinColumn, OneToMany, ManyToOne } from "typeorm"
+import { Reservation } from "./Reservation.entity"
 import { User } from "./User.entity"
+import { timezoneTransformer } from "./transformers"
+
 
 @Entity()
 export class Availability {
@@ -7,20 +10,31 @@ export class Availability {
     id: number
 
     @Column()
-    userId: number
-
-    @Column()
     timezone: string
 
-    @Column({type: 'date'})
-    date: Date
+    @Column()
+    dayOfWeek: number
 
-    @Column({type: 'time'})
+    @Column({type: 'timestamp', transformer: timezoneTransformer()})
     startTime: Date
 
-    @Column({type: 'time'})
+    @Column({type: 'timestamp', transformer: timezoneTransformer()})
     endTime: Date
 
-    @Column({type: 'date', nullable: true})
+    @Column({type: 'timestamp', transformer: timezoneTransformer()})
+    startDate: Date
+
+    @Column({type: 'timestamp', nullable: true, transformer: timezoneTransformer()})
     repeatUntil: Date
+
+    @OneToMany<Reservation>(() => Reservation, reservation => reservation.availability)
+    @JoinColumn()
+    reservations: Reservation[]
+
+    @Column({ nullable: true })
+    userId: number
+
+    @ManyToOne(() => User, user => user.availabilities, {onDelete: 'CASCADE'})
+    @JoinColumn()
+    user: User
 }

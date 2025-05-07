@@ -55,6 +55,24 @@ export enum UserRole {
     TRAINER = 'TRAINER'
 }
 
+export interface Availability {
+    id?: number
+    userId: number
+    timezone: string
+    dayOfWeek: number
+    startTime: Date
+    endTime: Date
+    startDate: Date
+    repeatUntil?: Date | null
+}
+
+export interface Reservation {
+    id?: number
+    userId: number
+    availabilityId: number
+    date: Date
+}
+
 export interface User {
     id?: number
     email: string
@@ -64,6 +82,20 @@ export interface User {
     isActive: boolean
     clients: User[]
     instagramHandle: string | null
+    availabilities: Availability[]
+    reservations: Reservation[]
 }
 
-export type Page = 'trainers' | 'signup' | 'clients' | 'profile' | 'assignments' | 'default' | 'login' | 'workout' | 'exercise' | 'activity' 
+export type Page = 'reservation' | 
+'availability' |
+'trainers' |
+'signup' |
+'clients' |
+'profile' |
+'assignments'|
+'default' |
+'login' |
+'workout'|
+'exercise' |
+'activity' 
+

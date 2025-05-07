@@ -1,4 +1,4 @@
-import { AccountCircle, Add, AddModeratorRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
+import { AccountCircle, Add, AddModeratorRounded, CalendarMonthRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
 import { AppBar, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
 import { Page, User, UserRole } from "../types";
@@ -71,6 +71,24 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             onClick={() => setPage('clients')}>
               <MedicalServices />
               <Typography variant="h6">Clients</Typography>
+          </Box>}
+          {(user.role === UserRole.ADMIN || user.role === UserRole.TRAINER) && <Box
+            display='flex'
+            alignItems='center'
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('availability')}>
+              <CalendarMonthRounded />
+              <Typography variant="h6">Availability</Typography>
+          </Box>}
+          {(user.role === UserRole.USER || user.role === UserRole.ADMIN )&& <Box
+            display='flex'
+            alignItems='center'
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('reservation')}>
+              <CalendarMonthRounded />
+              <Typography variant="h6">Reservations</Typography>
           </Box>}
           {!hideAdd && <Box display='flex' alignItems='center' sx={hoverStyle} onClick={handleAddButtonClick}>
             <Typography variant="h6">{selectedList.toUpperCase()}</Typography>

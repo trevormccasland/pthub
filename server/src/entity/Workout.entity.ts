@@ -8,7 +8,6 @@ export enum WorkoutType {
 
 @Entity()
 export class Workout {
-
     @PrimaryGeneratedColumn()
     id: number
 

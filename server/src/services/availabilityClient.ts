@@ -14,8 +14,14 @@ const createAvailability = async (availability: Availability): Promise<Availabil
     return await AppDataSource.getRepository(Availability).save(newAvailability)
 }
 
+const deleteAvailability = async (id: number): Promise<void> => {
+    await AppDataSource.getRepository(Availability).delete(id)
+}
+
+
 export default {
     getAvailabilities,
     updateAvailability,
-    createAvailability
+    createAvailability,
+    deleteAvailability
 }

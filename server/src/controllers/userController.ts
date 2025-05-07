@@ -31,7 +31,10 @@ const updateUsersResponse = async (req: Request, res: Response<UsersResponse>) =
 
 const createUserResponse = async (req: Request, res: Response<UserResponse>) => {
     const body = req.body
-    const entity = AppDataSource.manager.create(User, body)
+    const entity = AppDataSource.manager.create(User, {
+        ...body,
+        instagramHandle: body.instagramHandle || null,
+    })
     const user = await userClient.createUser(entity)
     res.json({user})
 }
