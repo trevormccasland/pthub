@@ -2,7 +2,7 @@ import { List, ListItem, ListItemText, ListItemButton, ListItemIcon, Box, Stack 
 import { useEffect, useState } from "react"
 import { Exercise } from "../types"
 import exerciseServiceClient from "../services/exerciseServiceClient";
-import ExercisePage from "./ExercisePage";
+import ExercisePage from "../pages/ExercisePage";
 import ExerciseCard from "./ExerciseCard";
 import { ModeEdit, Visibility } from "@mui/icons-material";
 

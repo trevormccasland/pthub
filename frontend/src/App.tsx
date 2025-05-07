@@ -2,16 +2,16 @@ import React, { useState, FC } from 'react';
 import ActivityList from "./components/ActivityList"; 
 import ExerciseList from "./components/ExerciseList";
 import WorkoutList from "./components/WorkoutList";
-import ActivityPage from './components/ActivityPage';
-import ExercisePage from './components/ExercisePage';
-import WorkoutPage from './components/WorkoutPage';
+import ActivityPage from './pages/ActivityPage';
+import ExercisePage from './pages/ExercisePage';
+import WorkoutPage from './pages/WorkoutPage';
 import NavBar from './components/NavBar';
 import { Page, User, UserRole } from './types';
 import UserForm from './components/UserForm';
 import { Box, Typography } from '@mui/material';
-import AssignmentPage from './components/AssignmentPage';
-import LoginPage from './components/LoginPage';
-import ClientsPage from './components/ClientsPage';
+import AssignmentPage from './pages/AssignmentPage';
+import LoginPage from './pages/LoginPage';
+import ClientsPage from './pages/ClientsPage';
 import TrainerGrid from './components/TrainerGrid';
 
 
