@@ -18,7 +18,7 @@ import activityServiceClient from '../services/activityServiceClient';
 
 interface WorkoutPageProps {
   workout: Workout
-  add: boolean
+  add?: boolean
 }
 
 const useStyles = makeStyles({

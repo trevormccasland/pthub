@@ -2,7 +2,7 @@ import { FC, useState } from "react";
 import { Page, User } from "../types";
 import { Container, List, ListItem, ListItemIcon, ListItemText, Stack } from "@mui/material";
 import { Email } from "@mui/icons-material";
-import EmailForm from "./EmailForm";
+import EmailForm from "../components/EmailForm";
 
 interface ClientsPageProps {
     user: User;

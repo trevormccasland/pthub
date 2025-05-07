@@ -2,7 +2,7 @@ import { List, ListItem, ListItemText, ListItemButton, ListItemIcon, Stack } fro
 import { useEffect, useState } from "react"
 import { Activity } from "../types"
 import activityServiceClient from "../services/activityServiceClient";
-import ActivityPage from "./ActivityPage";
+import ActivityPage from "../pages/ActivityPage";
 import { ModeEdit, Visibility } from "@mui/icons-material";
 import ActivityCard from "./ActivityCard";
 

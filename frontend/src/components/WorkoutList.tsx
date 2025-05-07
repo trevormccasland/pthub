@@ -4,8 +4,7 @@ import { Box, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack 
 import WorkoutCard from "./WorkoutCard"
 import workoutServiceClient from "../services/workoutServiceClient"
 import { ModeEdit, Visibility } from "@mui/icons-material"
-import ExercisePage from "./ExercisePage"
-import WorkoutPage from "./WorkoutPage"
+import WorkoutPage from "../pages/WorkoutPage"
 
 
 const WorkoutList: FC = () => {
