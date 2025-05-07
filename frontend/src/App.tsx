@@ -126,6 +126,7 @@ const App: FC = () => {
           handleAddButtonClick={handleAddButtonClick}
           user={user}
           setPage={setPage}
+          hideAdd={page === 'workout' || page === 'exercise' || page === 'activity'}
         />
         {component}
       </>
