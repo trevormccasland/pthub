@@ -1,4 +1,4 @@
-import { AccountCircle, Add, AddModeratorRounded, Diversity1, MedicalServices } from "@mui/icons-material";
+import { AccountCircle, Add, AddModeratorRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
 import { AppBar, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
 import { Page, User, UserRole } from "../types";
@@ -25,6 +25,15 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
     return <>
       <AppBar color='secondary' position="static">
         <Toolbar>
+          <Box
+            display="flex"
+            alignItems="center"
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('default')}>
+              <Home />
+              <Typography variant="h6">Home</Typography>
+          </Box>
           {user.id !== null && user.id !== undefined && <Box
             display="flex"
             alignItems="center"
