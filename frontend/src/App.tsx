@@ -100,15 +100,6 @@ const App: FC = () => {
     else if (action === 'workout' && page === 'default') {
       component = <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
     }
-    else if (action === 'activity') {
-      component = <ActivityPage add activity={{name: 'changeme', group: [], type: 'total body'}} />
-    }
-    else if (action === 'exercise') {
-      component = <ExercisePage add exercise={{name: 'changeme', level: 'stabilization', type: 'balance'}} />
-    }
-    else if (action === 'workout') {
-      component = <WorkoutPage add workout={{name: 'changeme', warmup: [], work: [], cooldown: [], type: 'straight set'}} />
-    }
     else if (selectedList === 'activity') {
       component = <ActivityList setSelectedItem={setSelectedItem} setPage={setPage} />
     }
