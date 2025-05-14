@@ -8,7 +8,6 @@ export enum WorkoutType {
 
 @Entity()
 export class Workout {
-
     @PrimaryGeneratedColumn()
     id: number
 
@@ -21,15 +20,15 @@ export class Workout {
     @Column({nullable: true })
     type: WorkoutType
 
-    @ManyToMany(() => Activity)
+    @ManyToMany<Activity>(() => Activity)
     @JoinTable()
     warmup: Activity[]
 
-    @ManyToMany(() => Activity)
+    @ManyToMany<Activity>(() => Activity)
     @JoinTable()
     work: Activity[]
 
-    @ManyToMany(() => Activity)
+    @ManyToMany<Activity>(() => Activity)
     @JoinTable()
     cooldown: Activity[]
 }

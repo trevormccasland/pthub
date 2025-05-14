@@ -11,7 +11,6 @@ const trim: ValueTransformer = {
 
 @Entity()
 export class Exercise {
-
     @PrimaryGeneratedColumn()
     id: number
 
