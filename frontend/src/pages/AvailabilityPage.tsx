@@ -15,6 +15,7 @@ import {
 import availabilityServiceClient from "../services/availabilityServiceClient"; // Mocked service client for handling availability
 import { Availability, Page, User } from "../types";
 import { timezones } from "../helpers/dates";
+import AvailabilityTable from "../components/AvailabilityTable";
 
 interface AvailabilityPageProps {
     user: User;
@@ -83,7 +84,7 @@ const AvailabilityPage: FC<AvailabilityPageProps> = ({user, setPage}) => {
             <Button variant="contained" color="primary" onClick={handleOpenDialog}>
                 Add Availability
             </Button>
-
+            <AvailabilityTable user={user} />
             {/* Dialog for Creating Availability */}
             <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth maxWidth="sm">
                 <DialogTitle>Create Availability</DialogTitle>

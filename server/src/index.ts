@@ -45,6 +45,7 @@ AppDataSource.initialize().then(async () => {
 
     app.post("/email/send", emailController.sendEmailResponse)
 
+    app.get("/availability/:userId", availabilityController.getUserAvailabilitiesResponse);
     app.get("/availability", availabilityController.getAvailabilitiesResponse);
     app.put("/availability", availabilityController.updateAvailabilityResponse)
     app.post("/availability", availabilityController.createAvailabilityResponse)

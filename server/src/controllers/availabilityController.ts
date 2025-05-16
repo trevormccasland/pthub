@@ -13,6 +13,12 @@ interface AvailabilityResponse {
     availability: Availability
 }
 
+const getUserAvailabilitiesResponse = async (req: Request, res: Response<AvailabilityListResponse>) => {
+    const { userId } = req.params
+    const availabilities = await availabilityClient.getAvailabilities({ userId: parseInt(userId, 10) })
+    res.json({ availabilities })
+}
+
 const getAvailabilitiesResponse = async (req: Request, res: Response<AvailabilityListResponse>) => {
     const availabilities = await availabilityClient.getAvailabilities()
     res.json({ availabilities });
@@ -54,6 +60,7 @@ const deleteAvailabilityResponse = async (req: Request, res: Response) => {
 
 export default {
     getAvailabilitiesResponse,
+    getUserAvailabilitiesResponse,
     updateAvailabilityResponse,
     createAvailabilityResponse,
     deleteAvailabilityResponse
