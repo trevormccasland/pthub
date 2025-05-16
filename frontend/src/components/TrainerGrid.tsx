@@ -1,15 +1,15 @@
 import { FC, useState } from "react";
-import { Grid, Card, CardContent, CardMedia, Typography, Box, IconButton } from "@mui/material";
-import { User, UserRole } from "../types";
-import { useUserGroups } from "../hooks/users";
+import { Grid, Card, CardContent, CardMedia, Typography, Box, IconButton, Icon } from "@mui/material";
+import { User } from "../types";
 import EmailForm from "./EmailForm";
-import { Email } from "@mui/icons-material";
+import { Email, Favorite } from "@mui/icons-material";
 
 interface TrainerGridProps {
-    user: User;
+    trainers: User[];
+    favorites?: boolean
 }
 
-const TrainerGrid: FC<TrainerGridProps> = ({ user }) => {
+const TrainerGrid: FC<TrainerGridProps> = ({ trainers, favorites }) => {
     const [openDialog, setOpenDialog] = useState(false);
     const [selectedEmail, setSelectedEmail] = useState<string>("");
 
@@ -22,8 +22,6 @@ const TrainerGrid: FC<TrainerGridProps> = ({ user }) => {
         setOpenDialog(false);
         setSelectedEmail("");
     };
-    const userGroups = useUserGroups()
-    const trainers = userGroups[UserRole.TRAINER].filter((trainer) => trainer.id !== user.id);
 
     return (
         <Box sx={{ padding: 2 }}>
@@ -31,6 +29,9 @@ const TrainerGrid: FC<TrainerGridProps> = ({ user }) => {
                 {trainers.map((trainer) => (
                     <Grid size={{xs: 12, sm: 6, md: 4, lg: 3 }} key={trainer.id}>
                         <Card sx={{ maxWidth: 345, borderRadius: 2, boxShadow: 3 }}>
+                            {favorites && <Icon color="warning" sx={{ mr: 2 }}>
+                                <Favorite />
+                            </Icon>}
                             <CardMedia
                                 component='iframe'
                                 height="200"

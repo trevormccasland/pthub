@@ -15,6 +15,7 @@ import ClientsPage from './pages/ClientsPage';
 import TrainerGrid from './components/TrainerGrid';
 import AvailabilityPage from './pages/AvailabilityPage';
 import ReservationPage from './pages/ReservationPage';
+import TrainerPage from './pages/TrainerPage';
 
 
 const App: FC = () => {
@@ -63,8 +64,8 @@ const App: FC = () => {
       component = (
         <Box>
           <Typography variant='h1'>Trainers</Typography>
-          <Typography variant='body1'>View and manage your trainers here.</Typography>
-          <TrainerGrid user={user} />
+          <Typography variant='body1'>View trainers here.</Typography>
+          <TrainerPage user={user} setPage={setPage} />
         </Box>
       )
     }
