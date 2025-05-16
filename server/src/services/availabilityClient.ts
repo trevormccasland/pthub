@@ -1,8 +1,16 @@
 import { AppDataSource } from "../data-source"
 import { Availability } from "../entity/Availability.entity"
 
-const getAvailabilities = async (): Promise<Availability[]> => {
-    return  await AppDataSource.getRepository(Availability).find()
+interface AvailabilitySearchOptions {
+    userId?: number
+}
+
+const getAvailabilities = async (options?: AvailabilitySearchOptions): Promise<Availability[]> => {
+    return  await AppDataSource.getRepository(Availability).find({
+        where: {
+            userId: options.userId
+        }
+    })
 }
 
 const updateAvailability = async (availability: Availability): Promise<Availability> => {

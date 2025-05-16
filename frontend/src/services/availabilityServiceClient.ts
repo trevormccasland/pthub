@@ -2,6 +2,15 @@ import { Availability } from "../types";
 
 const API_URL = "http://localhost:3000/availability"; // Adjust the URL as needed
 
+const getAvailabilitiesById = async (id: number): Promise<Availability[]> => {
+    const response = await fetch(`${API_URL}/${id}`);
+    if (!response.ok) {
+        throw new Error("Failed to fetch availability data");
+    }
+    const data = await response.json();
+    return data.availabilities;
+}
+
 const getAllAvailability = async (expanded?: boolean): Promise<Availability[]> => {
     const response = await fetch(`${API_URL}`);
     if (!response.ok) {
@@ -92,6 +101,7 @@ const deleteAvailability = async (id: number): Promise<void> => {
 
 
 export default {
+    getAvailabilitiesById,
     getAllAvailability,
     createAvailability,
     updateAvailability,
