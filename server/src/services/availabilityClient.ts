@@ -8,7 +8,7 @@ interface AvailabilitySearchOptions {
 const getAvailabilities = async (options?: AvailabilitySearchOptions): Promise<Availability[]> => {
     return  await AppDataSource.getRepository(Availability).find({
         where: {
-            userId: options.userId
+            ...(options?.userId && { id: options.userId }),
         }
     })
 }
