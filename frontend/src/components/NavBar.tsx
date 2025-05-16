@@ -63,7 +63,7 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
               <Diversity1 />
               <Typography variant="h6">Trainers</Typography>
           </Box>
-          {user.clients && <Box
+          {user.clients.length > 0 && <Box
             display='flex'
             alignItems='center'
             gap={1}
