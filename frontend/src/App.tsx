@@ -41,16 +41,7 @@ const App: FC = () => {
   
   const getComponent = () => useCallback(() => {
     let component = <></>;
-    if (page === 'signup') {
-      component = (
-        <Box>
-          <Typography variant='h1'>Welcome to PT Hub</Typography>
-          <Typography variant='body1'>Please create an account.</Typography>
-          <UserForm setUser={setUser} setPage={setPage}/>
-        </Box>
-      );
-    }
-    else if (page === 'profile') {
+    if (page === 'profile') {
       component = (
         <Box>
           <Typography variant='h1'>Edit User</Typography>
@@ -134,8 +125,25 @@ const App: FC = () => {
     )
   }, [selectedList, action, page, user, setUser, setPage]);
   const Component = getComponent()
-
-  return page === 'login' ? <LoginPage setUser={setUser} setPage={setPage}/> : <Component />
+  if (page !== 'login' && page !== 'signup') return <Component />
+  let SubComponent = () => <></>
+  if (page === 'login') {
+    SubComponent = () => <>
+      <Typography variant='h1'>Welcome to PT Hub</Typography>
+      <Typography variant='body1'>Please login to your account.</Typography>
+      <LoginPage setUser={setUser} setPage={setPage}/>
+    </>
+  }
+  else {
+    SubComponent = () => <>
+      <Typography variant='h1'>Welcome to PT Hub</Typography>
+      <Typography variant='body1'>Please create an account.</Typography>
+      <UserForm setUser={setUser} setPage={setPage}/>
+    </>
+  }
+  return <Box>
+    <SubComponent />
+  </Box>
 };
 
 export default App;
