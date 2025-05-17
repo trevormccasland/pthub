@@ -4,7 +4,7 @@ import { User } from "./User.entity"
 import { timezoneTransformer } from "./transformers"
 
 @Entity()
-@Unique(['availability', 'user'])
+@Unique(['availability', 'user', 'date'])
 export class Reservation {
     @PrimaryGeneratedColumn()
     id: number
