@@ -24,13 +24,14 @@ import availabilityServiceClient from "../services/availabilityServiceClient";
 import { useUserGroups } from "../hooks/users";
 import dates from "../helpers/dates";
 import reservationServiceClient from "../services/reservationServiceClient";
+import ReservationTable from "../components/ReservationTable";
 
 interface ReservationPageProps {
     user: User;
     setPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
-const ReservationPage: FC<ReservationPageProps> = () => {
+const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
     const [availability, setAvailability] = useState<Availability[]>([]);
     const [reservations, setReservations] = useState<Reservation[]>([]);
 
@@ -119,7 +120,7 @@ const ReservationPage: FC<ReservationPageProps> = () => {
             <Typography variant="h4" gutterBottom>
                 Trainer Availability
             </Typography>
-
+            <ReservationTable user={user} reservations={reservations} />
             {/* Filters */}
             <Stack spacing={2} sx={{ marginBottom: 3 }}>
                 <FormControl fullWidth>
