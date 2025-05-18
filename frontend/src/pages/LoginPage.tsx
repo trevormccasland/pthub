@@ -18,6 +18,8 @@ const LoginPage: React.FC<LoginPageProps> = ({ setUser, setPage }) => {
     isActive: true,
     clients: [],
     instagramHandle: '',
+    reservations: [],
+    availabilities: [],
   });
   const [users, setUsers] = useState<User[]>([])
   
