@@ -15,6 +15,22 @@ Express Server to support the PT Hub frontend
 npm install
 ```
 
+### Databasee Setup
+Currently there are no migrations. To make changes to the schema, we currently just delete the schema in postgres and let TypeORM recreate it.
+
+#### Postgres Setup with PgAdmin
+Add the version of PgAdmin you tested with here if it passed:
+* PgAdmin4 v8
+
+> [!NOTE]
+> Currently `pthub` is hardcoded in the app for these settings.
+
+1. Create a Login Role for the app and name it `pthub`. On the Privileges tab, enable all the options.
+2. Create a database, name it `pthub`, mark the owner as `pthub`.
+3. Create a schema, name it `pthub`, mark the owner as `pthub`.
+4. Start the server to create the schema
+5. (optional) Run the workoutImporter.ts file with `npx ts-node src/workoutImporter.ts`.
+
 ### How to Run
 ```bash
 npm start
