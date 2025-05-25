@@ -4,7 +4,7 @@ PT Hub is a web app for personal training.
 
 This app will allow a personal trainer to build programs and assign them to clients so they can follow along during their sessions.
 
-See [CONTRIBUTING.md](./CONTRIBUTING.MD) for information on how to develop and contribute to the project!
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for information on how to develop and contribute to the project!
 
 ## Service Architecture
 - Frontend
