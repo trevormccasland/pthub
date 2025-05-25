@@ -4,7 +4,7 @@ import { User } from "./User.entity"
 import { timezoneTransformer } from "./transformers"
 
 @Entity()
-@Unique(['availability', 'user', 'date'])
+@Unique(['availability', 'user', 'startTime'])
 export class Reservation {
     @PrimaryGeneratedColumn()
     id: number
@@ -24,5 +24,8 @@ export class Reservation {
     user: User
 
     @Column({type: 'timestamp', transformer: timezoneTransformer()})
-    date: Date
+    startTime: Date
+
+    @Column({type: 'int'})
+    duration: number
 }

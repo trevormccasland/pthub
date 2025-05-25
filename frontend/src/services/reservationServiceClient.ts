@@ -25,7 +25,7 @@ const getReservations = async () => {
     const data = await response.json();
     return data.reservations.map((reservation: Reservation) => ({
         ...reservation,
-        date: new Date(reservation.date)
+        startTime: new Date(reservation.startTime)
     }))
 }
 
