@@ -70,7 +70,8 @@ export interface Reservation {
     id?: number
     userId: number
     availabilityId: number
-    date: Date
+    startTime: Date
+    duration: number
 }
 
 export interface User {

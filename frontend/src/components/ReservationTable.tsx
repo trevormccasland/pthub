@@ -13,7 +13,8 @@ const ReservationTable: FC<ReservationTableProps> = ({ user, reservations }) => 
             <Table>
                 <TableHead>
                     <TableRow>
-                        <TableCell>Date</TableCell>
+                        <TableCell>Start Time</TableCell>
+                        <TableCell>Duration</TableCell>
                         <TableCell>Availability ID</TableCell>
                     </TableRow>
                 </TableHead>
@@ -28,8 +29,9 @@ const ReservationTable: FC<ReservationTableProps> = ({ user, reservations }) => 
                         reservations.map((r) => (
                             <TableRow key={r.id}>
                                 <TableCell>
-                                    {r.date ? new Date(r.date).toLocaleString() : ""}
+                                    {r.startTime ? new Date(r.startTime).toLocaleString() : ""}
                                 </TableCell>
+                                <TableCell>{r.duration}</TableCell>
                                 <TableCell>{r.availabilityId}</TableCell>
                             </TableRow>
                         ))

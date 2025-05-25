@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useMemo, useState } from "react";
 import {
     Button,
     Container,
@@ -18,6 +18,9 @@ import {
     Select,
     Stack,
     SelectChangeEvent,
+    RadioGroup,
+    FormControlLabel,
+    Radio,
 } from "@mui/material";
 import { Availability, Page, Reservation, User } from "../types";
 import availabilityServiceClient from "../services/availabilityServiceClient";
@@ -31,13 +34,23 @@ interface ReservationPageProps {
     setPage: React.Dispatch<React.SetStateAction<Page>>;
 }
 
+const getExpandedAvailability = (block: Availability, duration: number) => {
+    const numSegments = Math.round((block.endTime.getTime() - block.startTime.getTime()) / (60000 * duration));
+    return Array.from({ length: numSegments }, (_, i) => ({
+        ...block,
+        startTime: new Date(block.startTime.getTime() + i * duration * 60000),
+        endTime: new Date(block.startTime.getTime() + (i + 1) * duration * 60000),
+    }));
+}
+
 const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
     const [availability, setAvailability] = useState<Availability[]>([]);
     const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [duration, setDuration] = useState<number>(60)
 
     const userGroups = useUserGroups()
     const [selectedTrainers, setSelectedTrainers] = useState<number[]>([]);
-    const [filters, setFilters] = useState({
+    const [filters, setFilters] = useState<Record<keyof Pick<Availability, 'startDate' | 'dayOfWeek' | 'startTime' | 'endTime'>, string>>({
         startDate: "",
         dayOfWeek: "",
         startTime: "",
@@ -55,18 +68,33 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
         fetchAvailability();
     }, []);
 
+    const expandedAvailability = useMemo(() => {
+        return availability.flatMap((block) => getExpandedAvailability(block, duration));
+    }, [availability, duration]);
+
     useEffect(() => {
         const fetchReservations = async () => {
             const reservationData = await reservationServiceClient.getReservations();
-            console.log("Fetched Reservations:", reservationData);
             setReservations(reservationData);
         };
         fetchReservations();
     }, [])
 
     useEffect(() => {
-        const filtered = availability.filter((block) => {
-            const matchesReservation = reservations.some((reservation) => reservation.availabilityId === block.id && reservation.date.toISOString() === block.startDate.toISOString());
+        console.log('reservations', reservations)
+        const filtered = expandedAvailability.flat().filter((block) => {
+            console.log('block', block)
+            const matchesReservation = reservations.some((reservation) => (
+                reservation.availabilityId === block.id && (
+                    // Check if the reservation is within the block entirely
+                    (block.startTime <= reservation.startTime && block.endTime.getTime() >= (reservation.startTime.getTime() + reservation.duration * 60000)) ||
+                    // check if the reservation starts before the block and ends somewhere in the block
+                    (reservation.startTime < block.startTime && (reservation.startTime.getTime() + reservation.duration * 60000) >= block.endTime.getTime()) ||
+                    // check if the reservation starts in the block and ends after the block
+                    (reservation.startTime >= block.startTime && reservation.startTime.getTime() <= block.endTime.getTime() && (reservation.startTime.getTime() + reservation.duration * 60000) >= block.endTime.getTime())
+                    
+                )
+            ));
             if (matchesReservation) {
                 return false;
             }
@@ -79,7 +107,7 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
             return matchesTrainer && matchesDayOfWeek && matchesStartDate && matchesStartTime && matchesEndTime;
         });
         setFilteredAvailability(filtered);
-    }, [availability, selectedTrainers, filters, reservations]);
+    }, [expandedAvailability, selectedTrainers, filters, reservations, duration]);
 
     const handleTrainerSelection = (trainerId: number) => {
         setSelectedTrainers((prev) =>
@@ -98,11 +126,11 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
     const handleReserveClick = async (block: Availability) => {
         setSelectedBlock(block);
         setOpenDialog(true);
-        console.log("Reserving block:", block);
         await reservationServiceClient.createReservation({
             userId: block.userId,
             availabilityId: block.id!,
-            date: block.startDate
+            startTime: block.startDate,
+            duration: Math.round((block.endTime.getTime() - block.startTime.getTime()) / 60000),
         })
         setAvailability((prev) =>
             prev.filter((availability) => availability.id !== block.id)
@@ -187,6 +215,23 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
                 </List>
             </Stack>
 
+            {/* Duration radio button group selection */}
+            <Stack spacing={2} sx={{ marginBottom: 3 }}>
+                <Typography variant="h6">Select Duration</Typography>
+                <FormControl component="fieldset">
+                    <RadioGroup
+                        row
+                        value={duration.toString()}
+                        onChange={(e) => setDuration(parseInt(e.target.value))}
+                        name="duration-radio-group"
+                    >
+                        <FormControlLabel value="30" control={<Radio />} label="30 min" />
+                        <FormControlLabel value="60" control={<Radio />} label="60 min" />
+                        <FormControlLabel value="90" control={<Radio />} label="90 min" />
+                        <FormControlLabel value="120" control={<Radio />} label="120 min" />
+                    </RadioGroup>
+                </FormControl>
+            </Stack>
             {/* Filtered Availability */}
             <List>
                 {filteredAvailability.map((block) => (
