@@ -1,11 +1,11 @@
 class WelcomeController < ApplicationController
   def index
-    if logged_in?
-      @user = current_user
-      render 'dashboard'
-    else
+    # if logged_in?
+    #   @user = current_user
+    #   render 'dashboard'
+    # else
       render 'landing'
-    end
+    # end
   end
 
   private

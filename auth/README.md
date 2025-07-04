@@ -37,6 +37,7 @@ rails server
 # heroku buildpacks:add -i 1 https://github.com/lstoll/heroku-buildpack-monorepo.git --app your-app-name
 # heroku buildpacks:add heroku/ruby --app your-app-name
 # heroku config:set APP_BASE=auth --app your-app-name
+# heroku addons:create heroku-postgresql --app your-app-name
 # heroku git:remote -a your-app-name
 git push heroku main
 ```
