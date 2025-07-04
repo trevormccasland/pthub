@@ -31,3 +31,17 @@ Update .env file values GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET with your auth
 ```bash
 rails server
 ```
+
+## How to Deploy
+```bash
+# heroku buildpacks:add -i 1 https://github.com/lstoll/heroku-buildpack-monorepo.git --app your-app-name
+# heroku buildpacks:add heroku/ruby --app your-app-name
+# heroku config:set APP_BASE=auth --app your-app-name
+# heroku git:remote -a your-app-name
+git push heroku main
+```
+
+### To deploy from a dev branch
+```bash
+git push heroku your-branch-name:main
+```
