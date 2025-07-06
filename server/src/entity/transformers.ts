@@ -6,12 +6,21 @@ const applyTimezone = (date: Date | string, timezone: string): Date => {
     return new Date(localeString);
 }
 
+const parseAsUTC = (date: Date | string): Date => {
+    if (!date) return date instanceof Date ? date : new Date(date);
+    if (typeof date === "string" && !date.endsWith("Z") && !/[+-]\d{2}:\d{2}$/.test(date)) {
+        // If string lacks timezone info, treat as UTC by appending 'Z'
+        return new Date(date + "Z");
+    }
+    return new Date(date);
+};
+
 export const timezoneTransformer = () => {
     return {
         to: (value: Date) => value,
-        from: function (value: Date, entity?: any) {
+        from: function (value: Date | string, entity?: any): Date {
             const tz = entity?.timezone || this['timezone'];
-            return tz ? applyTimezone(value, tz) : value;
+            return tz ? applyTimezone(value, tz) : (value instanceof Date ? value : parseAsUTC(value));
         }
     };
 }

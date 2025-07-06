@@ -3,7 +3,7 @@ import { Availability } from "../types";
 const API_URL = "http://localhost:3000/availability"; // Adjust the URL as needed
 
 const getAvailabilitiesById = async (id: number): Promise<Availability[]> => {
-    const response = await fetch(`${API_URL}/${id}`);
+    const response = await fetch(`${API_URL}/?userId=${encodeURIComponent(id)}`);
     if (!response.ok) {
         throw new Error("Failed to fetch availability data");
     }

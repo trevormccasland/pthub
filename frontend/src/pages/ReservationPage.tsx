@@ -81,9 +81,7 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
     }, [])
 
     useEffect(() => {
-        console.log('reservations', reservations)
         const filtered = expandedAvailability.flat().filter((block) => {
-            console.log('block', block)
             const matchesReservation = reservations.some((reservation) => (
                 reservation.availabilityId === block.id && (
                     // Check if the reservation is within the block entirely
@@ -129,12 +127,11 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
         await reservationServiceClient.createReservation({
             userId: block.userId,
             availabilityId: block.id!,
-            startTime: block.startDate,
+            startTime: block.startTime,
             duration: Math.round((block.endTime.getTime() - block.startTime.getTime()) / 60000),
+            timezone: block.timezone,
         })
-        setAvailability((prev) =>
-            prev.filter((availability) => availability.id !== block.id)
-        )
+        
 
     };
 
@@ -142,6 +139,21 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
         setOpenDialog(false);
         setSelectedBlock(null);
     };
+
+    const handleDialogConfirm = async () => {
+        if (selectedBlock) {
+            await reservationServiceClient.createReservation({
+                userId: selectedBlock.userId,
+                availabilityId: selectedBlock.id!,
+                startTime: selectedBlock.startTime,
+                duration: Math.round((selectedBlock.endTime.getTime() - selectedBlock.startTime.getTime()) / 60000),
+                timezone: selectedBlock.timezone,
+            })
+            setSelectedBlock(null);
+        };
+
+        setOpenDialog(false);
+    }
 
     return (
         <Container>
@@ -239,6 +251,8 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
                         <ListItemText
                             primary={
                                 <>
+                                    <strong>Trainer:</strong> {userGroups['TRAINER'].find(t => t.id === block.userId)?.firstName} {userGroups['TRAINER'].find(t => t.id === block.userId)?.lastName}
+                                    <br />
                                     <strong>Day of Week:</strong> {dates.getDayOfWeek(block.dayOfWeek)}
                                     <br />
                                     <strong>Date:</strong> {block.startDate.toLocaleDateString([], { timeZone: block.timezone })}
@@ -308,7 +322,7 @@ const ReservationPage: FC<ReservationPageProps> = ({user, setPage}) => {
                     <Button onClick={handleDialogClose} color="secondary">
                         Cancel
                     </Button>
-                    <Button color="primary" variant="contained">
+                    <Button onClick={handleDialogConfirm} color="primary" variant="contained">
                         Confirm
                     </Button>
                 </DialogActions>
