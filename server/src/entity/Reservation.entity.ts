@@ -10,6 +10,9 @@ export class Reservation {
     id: number
 
     @Column()
+    timezone: string
+
+    @Column()
     availabilityId: number
 
     @ManyToOne(() => Availability, availability => availability.reservations, {onDelete: 'CASCADE'})

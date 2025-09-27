@@ -68,6 +68,7 @@ export interface Availability {
 
 export interface Reservation {
     id?: number
+    timezone: string
     userId: number
     availabilityId: number
     startTime: Date
