@@ -30,6 +30,7 @@ Add the version of PgAdmin you tested with here if it passed:
 3. Create a schema, name it `pthub`, mark the owner as `pthub`.
 4. Start the server to create the schema
 5. (optional) Run the workoutImporter.ts file with `npx ts-node src/workoutImporter.ts`.
+    - The workoutImporter.ts only works with excel files that have a particular format. I added a file [Body weight 4.xlsx](./src/Body%20weight%204.xlsx) as a sample.
 
 ### How to Run
 ```bash

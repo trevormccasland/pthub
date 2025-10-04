@@ -4,6 +4,9 @@ Anyone can request changes to be made to PT Hub. Changes to PT Hub need to go th
 
 If you see something here that you would like to change, please submit a PR!
 
+## Issues
+Please take a look at our issues for some ideas on what to contribute but a contribution doesn't have to be an issue for there to be a pull request submitted.
+
 ## Dev Setup
 Each service details how to run the project in their README.
 
