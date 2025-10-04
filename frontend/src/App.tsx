@@ -12,10 +12,10 @@ import { Box, Typography } from '@mui/material';
 import AssignmentPage from './pages/AssignmentPage';
 import LoginPage from './pages/LoginPage';
 import ClientsPage from './pages/ClientsPage';
-import TrainerGrid from './components/TrainerGrid';
 import AvailabilityPage from './pages/AvailabilityPage';
 import ReservationPage from './pages/ReservationPage';
 import TrainerPage from './pages/TrainerPage';
+import SessionPage from './pages/SessionPage';
 
 
 const App: FC = () => {
@@ -50,6 +50,15 @@ const App: FC = () => {
           <UserForm user={user} setUser={setUser} setPage={setPage} />
         </Box>
       );
+    }
+    else if (page === 'sessions') {
+      component = (
+        <Box>
+          <Typography variant='h1'>Sessions</Typography>
+          <Typography variant='body1'>View and manage your training sessions here.</Typography>
+          <SessionPage user={user} />
+        </Box>
+      )
     }
     else if (page === 'assignments') {
       component = (

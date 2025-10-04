@@ -9,6 +9,7 @@ import userController from "./controllers/userController";
 import emailController from "./controllers/emailController";
 import availabilityController from "./controllers/availabilityController";
 import reservationController from "./controllers/reservationController";
+import sessionController from "./controllers/sessionController";
 import dotenv from 'dotenv'
 dotenv.config()
 
@@ -55,6 +56,9 @@ AppDataSource.initialize().then(async () => {
     app.get("/reservation", reservationController.getReservationsResponse)
     app.put("/reservation", reservationController.updateReservationResponse)
     app.delete("/reservation", reservationController.deleteReservationResponse)
+    
+    app.post("/session", sessionController.createSessionResponse)
+    app.get("/session", sessionController.getSessionsResponse)
     // Start the Express server
     app.listen(port, () => {
         console.log(`The server is running at http://localhost:${port}`);

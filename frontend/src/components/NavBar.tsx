@@ -1,4 +1,4 @@
-import { AccountCircle, Add, AddModeratorRounded, CalendarMonthRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
+import { AccountCircle, Add, AddModeratorRounded, Assignment, CalendarMonthRounded, Diversity1, Home, MedicalServices } from "@mui/icons-material";
 import { AppBar, Box, FormControl, MenuItem, Select, SelectChangeEvent, Stack, Toolbar, Typography } from "@mui/material";
 import { FC } from "react"
 import { Page, User, UserRole } from "../types";
@@ -53,6 +53,15 @@ const NavBar: FC<NavBarProps> = ({selectedList, setSelectedList, handleAddButton
             onClick={() => setPage('assignments')}>
               <AddModeratorRounded />
               <Typography variant="h6">Assignments</Typography>
+          </Box>}
+          {(user.role === UserRole.USER || user.role === UserRole.ADMIN )&& <Box
+            display='flex'
+            alignItems='center'
+            gap={1}
+            sx={hoverStyle}
+            onClick={() => setPage('sessions')}>
+              <Assignment />
+              <Typography variant="h6">Sessions</Typography>
           </Box>}
           <Box
             display='flex'
