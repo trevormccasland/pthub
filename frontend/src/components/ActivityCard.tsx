@@ -1,10 +1,10 @@
-import { Box, Stack, Typography } from "@mui/material"
-import ExerciseCard from "./ExerciseCard"
-import { Activity, Exercise } from "../types"
-import { makeStyles } from '@mui/styles'
+import { Box, Stack, Typography } from "@mui/material";
+import ExerciseCard from "./ExerciseCard";
+import { Activity, Exercise, ActivityExercise } from "../types";
+import { makeStyles } from '@mui/styles';
 
 interface ActivityCardProps {
-    activity: Activity
+    activity: Activity;
 }
 
 const useStyles = makeStyles({
@@ -35,24 +35,26 @@ const useStyles = makeStyles({
     exercise: {
         width: '75%'
     }
-})
+});
 
-const ActivityCard = ({activity}: ActivityCardProps) => {
-    const classes = useStyles()
-    return <Stack className={classes.root}>
-        <Box className={classes.content}>
-            {activity.group.map((exercise, i) => (
-                <Stack direction='row' className={classes.row}>
-                    <Box className={classes.label}>
-                        <Typography variant="h4">{i + 1}.</Typography>
-                    </Box>
-                    <Box className={classes.exercise}>
-                        <ExerciseCard exercise={exercise} />
-                    </Box>
-                </Stack>
-            ))}
-        </Box>
-    </Stack>
-}
+const ActivityCard = ({ activity }: ActivityCardProps) => {
+    const classes = useStyles();
+    return (
+        <Stack className={classes.root}>
+            <Box className={classes.content}>
+                {activity.group.map((activityExercise: ActivityExercise) => (
+                    <Stack direction='row' className={classes.row} key={activityExercise.id}>
+                        <Box className={classes.label}>
+                            <Typography variant="h4">{activityExercise.order}.</Typography>
+                        </Box>
+                        <Box className={classes.exercise}>
+                            <ExerciseCard exercise={activityExercise.exercise} />
+                        </Box>
+                    </Stack>
+                ))}
+            </Box>
+        </Stack>
+    );
+};
 
-export default ActivityCard
+export default ActivityCard;

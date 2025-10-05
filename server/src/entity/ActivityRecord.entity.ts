@@ -1,28 +1,29 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Activity } from "./Activity.entity";
 import { ExerciseRecord } from "./ExerciseRecord.entity";
 import { WorkoutRecord } from "./WorkoutRecord.entity";
+import { ActivityExercise } from "./ActivityExercise.entity";
 
 @Entity()
 export class ActivityRecord {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: 'text', nullable: true})
+    @Column({ type: 'text', nullable: true })
     notes: string | null;
 
     @Column({ type: "varchar" })
     phase: "warmup" | "work" | "cooldown";
 
-    @OneToOne<Activity>(() => Activity)
+    @OneToOne(() => Activity)
     @JoinColumn()
-    activity: Activity;
+    activity: ActivityExercise;
 
     @OneToMany(() => ExerciseRecord, er => er.activityRecord, { cascade: true })
     @JoinColumn()
-    exerciseRecords: ExerciseRecord[]
+    exerciseRecords: ExerciseRecord[];
 
-    @ManyToOne(() => WorkoutRecord, wr => wr.workRecords)
+    @ManyToOne(() => WorkoutRecord, wr => wr.activityRecords)
     @JoinColumn()
-    workoutRecord: WorkoutRecord
+    workoutRecord: WorkoutRecord;
 }
