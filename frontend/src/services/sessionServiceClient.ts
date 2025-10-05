@@ -27,5 +27,6 @@ const getSessions = async (): Promise<Session[]> => {
 }
 
 export default {
-   createSession 
+    getSessions,
+    createSession 
 }

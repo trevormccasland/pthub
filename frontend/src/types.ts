@@ -22,17 +22,29 @@ export interface Activity {
     id?: number
     name: string
     type: SetType
-    group: Exercise[]
+    group: ActivityExercise[]
+}
+
+export interface WorkoutActivity {
+    id?: number;
+    activity: Activity;
+    order: number;
+    phase: "warmup" | "work" | "cooldown";
+}
+
+export interface ActivityExercise {
+    id?: number;
+    exercise: Exercise;
+    activity: Activity;
+    order: number;
 }
 
 export interface Workout {
-    id?: number
-    name: string
-    sets?: number | null
-    type: WorkoutType
-    warmup: Array<Activity>
-    work: Array<Activity>
-    cooldown: Array<Activity>
+    id?: number;
+    name: string;
+    sets?: number | null;
+    type?: WorkoutType | null;
+    workoutActivities?: WorkoutActivity[];
 }
 
 export interface Subject {
@@ -104,37 +116,16 @@ export interface CreateSessionData {
     workoutRecord?: {
         notes?: string | null;
         workout?: { id: number };
-        warmupRecords?: Array<{
+        activityRecords?: Array<{
             notes?: string | null;
-            activity?: { id: number };
+            phase: "warmup" | "work" | "cooldown";
+            activity?: { id: number }; // Corresponds to ActivityExercise.entity.ts
             exerciseRecords?: Array<{
                 notes?: string | null;
                 exercise?: { id: number };
                 load?: number | null;
                 time?: number | null;
-                reps?: number | null;
-            }>;
-        }>;
-        workRecords?: Array<{
-            notes?: string | null;
-            activity?: { id: number };
-            exerciseRecords?: Array<{
-                notes?: string | null;
-                exercise?: { id: number };
-                load?: number | null;
-                time?: number | null;
-                reps?: number | null;
-            }>;
-        }>;
-        cooldownRecords?: Array<{
-            notes?: string | null;
-            activity?: { id: number };
-            exerciseRecords?: Array<{
-                notes?: string | null;
-                exercise?: { id: number };
-                load?: number | null;
-                time?: number | null;
-                reps?: number | null;
+                sets?: number | null; // Added sets to match ExerciseRecord entity
             }>;
         }>;
     };

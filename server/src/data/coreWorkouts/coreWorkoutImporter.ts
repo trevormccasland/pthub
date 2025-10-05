@@ -4,6 +4,8 @@ import path from 'path';
 import { Exercise } from "../../entity/Exercise.entity";
 import { Activity, ActivityType } from "../../entity/Activity.entity";
 import { Workout, WorkoutType } from "../../entity/Workout.entity";
+import { WorkoutActivity } from "../../entity/WorkoutActivity.entity";
+import { ActivityExercise } from "../../entity/ActivityExercise.entity";
 
 // current directory
 const directory = __dirname;
@@ -41,12 +43,32 @@ AppDataSource.initialize().then(async () => {
         });
 
         const exercises: Exercise[] = [];
-        const activities: Activity[] = [];
-        const warmup: Activity[] = [];
-        const work: Activity[] = [];
-        const cooldown: Activity[] = [];
+        const workActivities: Activity[] = [];
 
-        for (const row of rows) {
+        const workoutService = AppDataSource.getRepository(Workout);
+        const activityService = AppDataSource.getRepository(Activity);
+        const exerciseService = AppDataSource.getRepository(Exercise);
+        const workoutActivityService = AppDataSource.getRepository(WorkoutActivity);
+        const activityExerciseService = AppDataSource.getRepository(ActivityExercise);
+
+        // We will create and save the workout first, then link activities to it.
+        const title = path.basename(file, ".csv")
+            .split('-')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+
+        const workout = workoutService.create({
+            name: `Core - ${title}`,
+            sets: null,
+            type: WorkoutType.STRAIGHT_SET,
+        });
+
+        const newWorkout = await workoutService.save(workout);
+        
+        // Loop through each row to create and link entities
+        const entries = rows.entries();
+        for (let i =0; i < rows.length; i++) {
+            const [index, row] = entries.next().value;
             const [
                 exerciseName,
                 classification,
@@ -58,44 +80,42 @@ AppDataSource.initialize().then(async () => {
                 harder
             ] = row;
 
-            const exerciseService = AppDataSource.getRepository(Exercise);
             const cleanedName = exerciseName.replace(/^\d+\.\s*/, "");
-            const exercise = exerciseService.create({
+            
+            // 1. Create and save Exercise entity
+            const newExercise = exerciseService.create({
                 name: cleanedName,
                 type: classification,
                 notes: `Easier: ${easier}. Harder: ${harder}`,
                 ...parseSetsReps(week1)
             });
-            await AppDataSource.manager.save(exercise);
-            exercises.push(exercise);
+            await exerciseService.save(newExercise);
 
-            const activityService = AppDataSource.getRepository(Activity);
-            const activity = activityService.create({
+            // 2. Create and save Activity entity
+            const newActivity = activityService.create({
                 name: cleanedName,
                 type: ActivityType.TOTAL_BODY,
-                group: [exercise]
             });
-            await AppDataSource.manager.save(activity);
-            activities.push(activity);
+            await activityService.save(newActivity);
 
-            work.push(activity);
+            // 3. Create and save ActivityExercise entity to link Exercise to Activity
+            const newActivityExercise = activityExerciseService.create({
+                activity: newActivity,
+                exercise: newExercise,
+                order: 1, // Assuming one exercise per activity, so order is 1
+            });
+            await activityExerciseService.save(newActivityExercise);
+
+            // 4. Create and save WorkoutActivity entity to link Activity to Workout
+            const newWorkoutActivity = workoutActivityService.create({
+                workout: newWorkout,
+                activity: newActivity,
+                phase: 'work', // All activities are 'work' phase in this importer
+                order: index, // Use the row index as the order
+            });
+            await workoutActivityService.save(newWorkoutActivity);
         }
-
-        const workoutService = AppDataSource.getRepository(Workout);
-        const title = path.basename(file, ".csv")
-            .split('-')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-        const workout = workoutService.create({
-            name: `Core - ${title}`,
-            sets: null,
-            type: WorkoutType.STRAIGHT_SET,
-            warmup,
-            work,
-            cooldown
-        });
-        await AppDataSource.manager.save(workout);
 
         console.log(`Imported workout, activities, and exercises from ${file}!`);
     }
-});
+}).catch(error => console.log(error));

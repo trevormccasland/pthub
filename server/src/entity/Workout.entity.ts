@@ -1,5 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, JoinTable, ManyToMany } from "typeorm"
-import { Activity } from "./Activity.entity"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { WorkoutActivity } from "./WorkoutActivity.entity"
 
 export enum WorkoutType {
     CIRCUIT = 'circuit',
@@ -20,15 +20,6 @@ export class Workout {
     @Column({nullable: true })
     type: WorkoutType
 
-    @ManyToMany<Activity>(() => Activity)
-    @JoinTable()
-    warmup: Activity[]
-
-    @ManyToMany<Activity>(() => Activity)
-    @JoinTable()
-    work: Activity[]
-
-    @ManyToMany<Activity>(() => Activity)
-    @JoinTable()
-    cooldown: Activity[]
+    @OneToMany(() => WorkoutActivity, wa => wa.workout, { cascade: true })
+    workoutActivities: WorkoutActivity[];
 }

@@ -4,6 +4,7 @@ import { WorkoutRecord } from "../entity/WorkoutRecord.entity";
 import { ActivityRecord } from "../entity/ActivityRecord.entity";
 import { ExerciseRecord } from "../entity/ExerciseRecord.entity";
 import { DeepPartial } from "typeorm";
+import { ActivityExercise } from "../entity/ActivityExercise.entity";
 
 export const createSession = async (sessionData: DeepPartial<Session>): Promise<Session> => {
     const sessionRepo = AppDataSource.getRepository(Session);
@@ -15,58 +16,35 @@ export const createSession = async (sessionData: DeepPartial<Session>): Promise<
     if (sessionData.workoutRecord) {
         const wrData = sessionData.workoutRecord;
 
-        // 1. Create and save WorkoutRecord first (without activity records)
+        // 1. Create ExerciseRecord entities
+        const exerciseRecordsPromises = wrData.activityRecords?.flatMap(arData =>
+            arData.exerciseRecords?.map(erData =>
+                exerciseRecordRepo.create(erData as DeepPartial<ExerciseRecord>)
+            ) || []
+        ) || [];
+        const createdExerciseRecords = await exerciseRecordRepo.save(exerciseRecordsPromises);
+        
+        // 2. Create ActivityRecord entities and associate them with their ExerciseRecords
+        const activityRecordsPromises = wrData.activityRecords?.map(arData => {
+            const newAr = activityRecordRepo.create({
+                notes: arData.notes,
+                phase: arData.phase,
+                activity: arData.activity as ActivityExercise, // Correctly associating with ActivityExercise
+                exerciseRecords: createdExerciseRecords.splice(0, arData.exerciseRecords?.length || 0)
+            });
+            return newAr;
+        }) || [];
+        const createdActivityRecords = await activityRecordRepo.save(activityRecordsPromises);
+
+        // 3. Create WorkoutRecord entity and associate it with the created ActivityRecords
         workoutRecord = workoutRecordRepo.create({
-            notes: wrData.notes,
-            workout: wrData.workout,
+            ...wrData,
+            activityRecords: createdActivityRecords
         });
-        await workoutRecordRepo.save(workoutRecord);
-
-        // Helper to create ActivityRecords and ExerciseRecords for a phase
-        const createActivityRecords = async (
-            activityRecordsData: DeepPartial<ActivityRecord>[] = [],
-            workoutRecord: WorkoutRecord,
-            phase: "warmup" | "work" | "cooldown"
-        ) => {
-            const activityRecords: ActivityRecord[] = [];
-            for (const arData of activityRecordsData) {
-                const activityRecord = activityRecordRepo.create({
-                    notes: arData.notes,
-                    activity: arData.activity,
-                    workoutRecord: workoutRecord,
-                    phase,
-                });
-                await activityRecordRepo.save(activityRecord);
-
-                const exerciseRecords: ExerciseRecord[] = [];
-                for (const erData of arData.exerciseRecords || []) {
-                    const exerciseRecord = exerciseRecordRepo.create({
-                        ...erData,
-                        activityRecord: activityRecord,
-                    });
-                    await exerciseRecordRepo.save(exerciseRecord);
-                    exerciseRecords.push(exerciseRecord);
-                }
-
-                activityRecord.exerciseRecords = exerciseRecords;
-                await activityRecordRepo.save(activityRecord);
-
-                activityRecords.push(activityRecord);
-            }
-            return activityRecords;
-        };
-
-        // Create all activity records for each phase
-        workoutRecord.warmupRecords = await createActivityRecords(wrData.warmupRecords, workoutRecord, "warmup");
-        workoutRecord.workRecords = await createActivityRecords(wrData.workRecords, workoutRecord, "work");
-        workoutRecord.cooldownRecords = await createActivityRecords(wrData.cooldownRecords, workoutRecord, "cooldown");
-
-
-        // Save WorkoutRecord again with all activity records attached
         await workoutRecordRepo.save(workoutRecord);
     }
 
-    // Create the session with the newly created workoutRecord
+    // 4. Create the Session entity and associate it with the created WorkoutRecord
     const session = sessionRepo.create({
         ...sessionData,
         workoutRecord,
@@ -82,12 +60,10 @@ export const getAllSessions = async (): Promise<Session[]> => {
             "participants",
             "trainer",
             "workoutRecord",
-            "workoutRecord.warmupRecords",
-            "workoutRecord.warmupRecords.exerciseRecords",
-            "workoutRecord.workRecords",
-            "workoutRecord.workRecords.exerciseRecords",
-            "workoutRecord.cooldownRecords",
-            "workoutRecord.cooldownRecords.exerciseRecords",
+            "workoutRecord.activityRecords",
+            "workoutRecord.activityRecords.activity",
+            "workoutRecord.activityRecords.exerciseRecords",
+            "workoutRecord.activityRecords.exerciseRecords.exercise",
         ],
     });
-}
+};

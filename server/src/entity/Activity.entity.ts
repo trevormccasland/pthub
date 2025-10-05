@@ -1,5 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, JoinTable, OneToMany } from "typeorm"
 import { Exercise } from "./Exercise.entity"
+import { ActivityExercise } from "./ActivityExercise.entity"
 
 export enum ActivityType {
     SYNERGISTIC = 'synergistic',
@@ -15,9 +16,9 @@ export class Activity {
     @Column()
     name: string
 
-    @ManyToMany<Exercise>(() => Exercise)
+    @OneToMany(() => ActivityExercise, ae => ae.activity, { cascade: true })
     @JoinTable()
-    group: Exercise[]
+    group: ActivityExercise[]
 
     @Column({nullable: true})
     type: ActivityType
